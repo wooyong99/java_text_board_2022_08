@@ -1,7 +1,7 @@
 package com.jwy.exam.board;
 
 import java.util.Scanner;
-
+//push 연습 1
 public class Main {
   public static void main(String[] args) {
     System.out.println("== 게시판 v 0.1 ==");
