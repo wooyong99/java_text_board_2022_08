@@ -33,7 +33,7 @@ public class Main {
       }
     }
     System.out.println("== 프로그램 종료 ==");
-    System.out.println(user_map.toString());
+    System.out.println(user_map);
     sc.close();
   }
 }
