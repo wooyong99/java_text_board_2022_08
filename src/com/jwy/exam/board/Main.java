@@ -1,5 +1,6 @@
 package com.jwy.exam.board;
 
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -28,7 +29,20 @@ public class Main {
         System.out.printf("%d번 게시물이 등록되었습니다.\n",index_num);
         user_map.put(index_num,new Article(index_num,title,body));
         index_num++;
-      }else{
+      }else if(input.equals("/usr/article/detail")){
+        System.out.println("== 게시판 상세보기 ==");
+        System.out.printf("번호 : %d\n",user_map.get(index_num-1).id);
+        System.out.printf("제목 : %s\n",user_map.get(index_num-1).title);
+        System.out.printf("내용 : %s\n",user_map.get(index_num-1).body);
+      }else if(input.equals("/usr/article/list")){
+        System.out.println("== 게시물 리스트 ==");
+        System.out.println("--------------------");
+        System.out.println("번호 / 제목");
+        System.out.println("--------------------");
+        for(int i=index_num-1;i>=1;i--){
+          System.out.println(user_map.get(i).id+" / "+user_map.get(i).title);
+        }
+      } else{
         System.out.printf("입력된 명령어 : %s\n",input);
       }
     }

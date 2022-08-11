@@ -25,7 +25,7 @@ public class Main {
       if (input_id.length() >= 8 && id_check(input_id) && m.matches() == true) {
         return input_id;
       } else {
-        throw new ValException("8글자 이상 / 특수문자 제외 / 중복 x");
+        throw new ValException("아이디 유효성 검사 실패(중복/특수문자/8글자이하 x)");
       }
     } catch (ValException e) {
       System.out.println(e.getMessage());
@@ -34,6 +34,23 @@ public class Main {
     System.out.println("아이디를 다시 입력해주세요:  ");
     String id = sc.next();
     return id_validation(id);
+  }
+  static String pw_validation(String input_pw){
+    Pattern p =Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$");
+    Matcher m=p.matcher(input_pw);
+    try{
+      if(m.matches()==true){
+        return input_pw;
+      }else{
+        throw new ValException("비밀번호 유효성 검사 실패");
+      }
+    }catch(ValException e){
+      System.out.println(e.getMessage());
+      System.out.printf("비밀번호를 다시 입력해주세요: ");
+      Scanner sc=new Scanner(System.in);
+      String pw=sc.next();
+      return pw_validation(pw);
+    }
   }
   static boolean id_check(String input_id) {
     for (Integer u : map.keySet()) {
@@ -45,6 +62,7 @@ public class Main {
   }
   static void SignUp(String name, String id, String password, String num, boolean gender) {
     String validation_id = id_validation(id);
+    //String validation_pw=pw_validation(password);
     if (gender == true) {
       map.put(index_num, new User_man(name, validation_id, password, num, gender));
       index_num++;
