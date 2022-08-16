@@ -43,7 +43,7 @@ public class Main {
     }
   }
   // 게시글 업데이트 메서드
-  static void Aricle_Update(int article_num,String update_title, String update_body){
+  static void Article_Update(int article_num,String update_title, String update_body){
     try{
       if(article_num>article.size()){
         throw new IndexOutOfBoundsException("해당 번호 게시글이 존재하지 않습니다.");
@@ -56,7 +56,7 @@ public class Main {
       System.out.println(e.getMessage());
     }
   }
-  public static void main(String[] args) {
+  public static void main() {
     System.out.println("== 게시판 v 0.1 ==");
     System.out.println("== 프로그램 시작 ==");
     Scanner sc=new Scanner(System.in);
@@ -105,7 +105,7 @@ public class Main {
             String update_title = sc.nextLine();
             System.out.println("변경할 내용을 입력해주세요 :");
             String update_body = sc.nextLine();
-            Aricle_Update(Integer.parseInt(article_num[article_num.length - 1]), update_title, update_body);
+            Article_Update(Integer.parseInt(article_num[article_num.length - 1]), update_title, update_body);
           }
         }catch(IndexOutOfBoundsException e){
           System.out.println(e.getMessage());
