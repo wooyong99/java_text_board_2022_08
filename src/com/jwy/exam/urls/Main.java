@@ -1,28 +1,45 @@
 package com.jwy.exam.urls;
-
-
-
 import java.util.*;
 
 public class Main {
-  // Prameter의 이름과 값을 Map형태로 저장.
-  static Map<String, String> params=new HashMap<>();
-  // 파싱 로직 :
-  // 1. 매개변수로 받은 url을  &를 기준으로 분리한다.
-  // 2. "="기호 미포함 및 2개 이상 / 공백 포함은 탐색하지 않는다.
-  // 3. 위 조건을 통과한 query는 이름과 값으로 나누기 위해 "=" 기준으로 분리한다.
-  // 4. 배열의 개수가 2개인 bit만을 리스트에 저장한다.
   public static void main(String args[]){
-
-    String queryString="where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=%EC%A0%95%EC%9A%B0%EC%9A%A9";
-    Map<String, String> param1=Util.getParam(queryString);
-    System.out.println(param1);
+    String queryString="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=asd";
+    Rq rq=new Rq(queryString);
+    System.out.println("urlpath : "+rq.getUrl());
+    System.out.println("params : "+rq.getParam());
   }
 }
+class Rq{
+  String url;
+  Map<String,String> url_param;
+  String url_path;
+  Rq(String url){
+    this.url=url;
+  }
+  public Map<String,String> getParam(){
+    if(url_param==null){
+      return Util2.getParameterFromUrl(url);
+    }else{
+      return this.url_param;
+    }
+
+  }
+  public String getUrl(){
+    if(url_path==null){
+      return Util2.getUrlPathFromUrl(url);
+    }else{
+      return this.url_path;
+    }
+  }
+}
+// url 파싱로직 방법1
+// "?" 기준으로 나눈다 -> "&" 기준으로 나눈다 -> "="미포함 || 공백 포함 || "="2개 이상 조건에 부합하지 않는다면
+// "=" 기준으로 나누고, 길이가 2개라면 param Map에 추가해서 리턴한다.
 class Util{
   static Map<String,String> getParam(String queryStr){
     Map<String,String> param=new HashMap<>();
-    for(String q:queryStr.split("&")) {
+    String query=queryStr.substring(queryStr.indexOf("?")+1);
+    for(String q:query.split("&")) {
       if (q.contains("=") == false || q.contains(" ") == true || q.matches("[=]{2,}") == true) {
         continue;
       } else {
@@ -32,5 +49,26 @@ class Util{
         }
       }
     }return param;
+  }
+}
+// url 파싱로직 방법2
+// "?" 기준으로 나눈다 -> "&" 기준으로 나눈다. -> "=" 기준으로 나눈다
+// 그리고 최종 bit의 길이가 2개라면 parameter Map에 추가해서 리턴한다.
+class Util2{
+  static Map<String,String> getParameterFromUrl(String queryString){
+    Map<String, String> parameter=new HashMap<>();
+    //String queryStrings=queryString.substring(queryString.indexOf("?")+1);
+    String[] queryStrings=queryString.split("\\?",2);
+    String[] query=queryStrings[1].split("\\&");
+    for(String bits:query){
+      String[] bit=bits.split("=");
+      if(bit.length==2){
+        parameter.put(bit[0],bit[1]);
+      }
+    }
+    return parameter;
+  }
+  static String getUrlPathFromUrl(String queryString){
+    return queryString.split("\\?",2)[0];
   }
 }

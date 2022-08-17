@@ -56,7 +56,7 @@ public class Main {
       System.out.println(e.getMessage());
     }
   }
-  public static void main() {
+  public static void main(String args[]) {
     System.out.println("== 게시판 v 0.1 ==");
     System.out.println("== 프로그램 시작 ==");
     Scanner sc=new Scanner(System.in);
@@ -91,29 +91,28 @@ public class Main {
         for(int i=last_index_num-1;i>=1;i--){
           System.out.println(article.get(i).id+" / "+article.get(i).title);
         }
-      }else if(input.contains("/usr/article/update")){
-        String[] article_num=input.split("/");
-        try{
-          if(article_num[article_num.length-1].equals("update")==true){
+      }else if(input.contains("/usr/article/update")) {
+        String[] article_num = input.split("/");
+        try {
+          if (article_num[article_num.length - 1].equals("update") == true) {
             throw new Exception("업데이트할 게시글 번호를 입력해주세요.");
-          } else if(last_index_num-1 < Integer.parseInt(article_num[article_num.length-1])){
-            throw new IndexOutOfBoundsException("마지막 게시글은 "+article.size()+"번입니다.");
-          }else{
-            System.out.println(last_index_num-1+" - "+article.size());
-            System.out.println(Integer.parseInt(article_num[article_num.length-1]));
+          } else if (last_index_num - 1 < Integer.parseInt(article_num[article_num.length - 1])) {
+            throw new IndexOutOfBoundsException("마지막 게시글은 " + article.size() + "번입니다.");
+          } else {
+            System.out.println(last_index_num - 1 + " - " + article.size());
+            System.out.println(Integer.parseInt(article_num[article_num.length - 1]));
             System.out.println("변경할 제목을 입력해주세요 :");
             String update_title = sc.nextLine();
             System.out.println("변경할 내용을 입력해주세요 :");
             String update_body = sc.nextLine();
             Article_Update(Integer.parseInt(article_num[article_num.length - 1]), update_title, update_body);
           }
-        }catch(IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
           System.out.println(e.getMessage());
-        }catch(Exception e){
+        } catch (Exception e) {
           System.out.println(e.getMessage());
         }
-      }
-      else{
+      }else{
         System.out.printf("입력된 명령어 : %s\n",input);
       }
     }

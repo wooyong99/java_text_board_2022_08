@@ -1,7 +1,5 @@
 package com.jwy.exam.accounts;
-import com.jwy.exam.board.*;
-import javax.xml.validation.Validator;
-import java.io.File;
+import com.jwy.exam.board.Main.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,24 +80,27 @@ public class Main {
     if (gender == true) {
       map.put(index_num, new User_man(name, validation_id, validation_pw, num, gender));
       index_num++;
+      System.out.println("회원가입 완료.");
     } else {
       map.put(index_num, new User_woman(name, validation_id, validation_pw, num, gender));
       index_num++;
+      System.out.println("회원가입 완료.");
     }
   }
   // 로그인 메소드 (로그인 시, com.jwy.exam.board.Main 메소드 실행)
-  static void Login(String id, String password){
+  static String Login(String id, String password){
     try{
       for(Integer user_idx : map.keySet()){
         if(map.get(user_idx).id.equals(id)&&map.get(user_idx).password.equals(password)){
-          com.jwy.exam.board.Main.main();
-        }else{
-          throw new NullPointerException("해당 아이디 정보가 없습니다.");
+          System.out.println("로그인 성공 !");
+          return null;
         }
       }
+      throw new NullPointerException("해당 아이디 정보가 없습니다.");
     }catch(NullPointerException e){
       System.out.println(e.getMessage());
     }
+    return null;
   }
 
   public static void main(String args[]) {
@@ -107,27 +108,25 @@ public class Main {
     Scanner sc = new Scanner(System.in);
     CreateUser();
     while (true) {
-      System.out.println("명령어를 입력해주세요.(login / signup / exit ?");
+      System.out.println("명령어를 입력해주세요.(login / signup / exit) ?");
       String input = sc.next();
       if (input.equals("signup")) {
         String name, id, password, num;
         boolean gender;
-        System.out.printf("이름/아이디/비밀번호/전화번호를 입력해주세요.\n");
+        System.out.println("==== 회원가입 ====");
+        System.out.printf("이름/아이디/비밀번호/전화번호를 입력해주세요. \n");
         name = sc.next();
         id = sc.next();
         password = sc.next();
         num = sc.next();
         gender = sc.nextBoolean();
         SignUp(name, id, password, num, gender);
-      } else if (input.equals("exit")) {
-        break;
       } else if(input.equals("login")){
         System.out.println("아이디, 비밀번호를 입력해주세요.");
         Login(sc.next(),sc.next());
-      } else {
+      } else if (input.equals("exit")) {
         break;
       }
-
     }
     System.out.println("== 프로그램 종료 ==");
     // User 리스트 출력
@@ -140,6 +139,7 @@ public class Main {
 abstract class User {
   String name;
   String id;
+
   String password;
   String num;
   boolean gender;
@@ -149,6 +149,15 @@ abstract class User {
     this.id = id;
     this.password = password;
     this.num = num;
+  }
+  public void setID(String id){
+    this.id=id;
+  }
+  public void setPassowrd(String password){
+    this.password=password;
+  }
+  public void setNum(String num){
+    this.num=num;
   }
 
   public String toString() {
