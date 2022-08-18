@@ -1,37 +1,30 @@
 package com.jwy.exam.urls;
+
 import java.util.*;
 
 public class Main {
   public static void main(String args[]){
-    String queryString="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=asd";
+    String queryString="/usr/article/detail?id=3&pw=5";
     Rq rq=new Rq(queryString);
     System.out.println("urlpath : "+rq.getUrl());
     System.out.println("params : "+rq.getParam());
   }
 }
 class Rq{
-  String url;
-  Map<String,String> url_param;
-  String url_path;
+  private String url;
+  private Map<String,String> url_param;
+  private String url_path;
   Rq(String url){
     this.url=url;
+    this.url_param=Util2.getParameterFromUrl(url);
+    this.url_path=Util2.getUrlPathFromUrl(url);
   }
   public Map<String,String> getParam(){
-    if(url_param==null){
-      return Util2.getParameterFromUrl(url);
-    }else{
-      return this.url_param;
-    }
-
+    return this.url_param;
   }
   public String getUrl(){
-    if(url_path==null){
-      return Util2.getUrlPathFromUrl(url);
-    }else{
       return this.url_path;
-    }
-  }
-}
+}}
 // url 파싱로직 방법1
 // "?" 기준으로 나눈다 -> "&" 기준으로 나눈다 -> "="미포함 || 공백 포함 || "="2개 이상 조건에 부합하지 않는다면
 // "=" 기준으로 나누고, 길이가 2개라면 param Map에 추가해서 리턴한다.
@@ -59,6 +52,9 @@ class Util2{
     Map<String, String> parameter=new HashMap<>();
     //String queryStrings=queryString.substring(queryString.indexOf("?")+1);
     String[] queryStrings=queryString.split("\\?",2);
+    if(queryStrings.length==1){
+      return parameter;
+    }
     String[] query=queryStrings[1].split("\\&");
     for(String bits:query){
       String[] bit=bits.split("=");
