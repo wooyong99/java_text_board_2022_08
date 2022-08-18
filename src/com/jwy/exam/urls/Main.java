@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Main {
   public static void main(String args[]){
-    String queryString="/usr/article/detail?id=3&pw=5";
+    String queryString="/usr/article/detail?id3";
     Rq rq=new Rq(queryString);
     System.out.println("urlpath : "+rq.getUrl());
     System.out.println("params : "+rq.getParam());
