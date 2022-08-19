@@ -9,19 +9,39 @@ public class Main {
   static Map<Integer, Article> article = new HashMap();
 
   // 테스트 입력 데이터 메서드
-  static void CreateTestArticle(int test_article_count) {
+  /*static void CreateTestArticle(int test_article_count) {
     System.out.println("== 테스트 데이터 생성 시작 ==");
     for(int i=1;i<=test_article_count;i++){
       CreateArticle("사용자"+i,"제목"+i, "내용"+i);
     }
     System.out.println("== 테스트 데이터"+test_article_count+"개 생성 ==");
-  }
+  }*/
 
   // 게시글 생성 메서드
-  static void CreateArticle(String author, String title, String body) {
-    article.put(last_index_num, new Article(last_index_num,author, title, body));
-    System.out.printf("%d번 게시물이 등록되었습니다.\n", last_index_num);
-    last_index_num++;
+  static void CreateArticle(Rq rq, Scanner sc) {
+    String author= "",title="",body=""; // 입력 변수 : 작성자, 제목, 내용
+    Map<String,String> params=rq.getParam();
+    System.out.printf("== 게시물 등록 ==\n");
+    if(params.containsKey("author")){
+      System.out.println("작성자 : "+params.get("author"));
+      System.out.printf("제목 : ");
+      title = sc.nextLine();
+      System.out.printf("내용 : ");
+      body = sc.nextLine();
+      article.put(last_index_num, new Article(last_index_num,params.get("author"), title, body));
+      System.out.printf("%d번 게시물이 등록되었습니다.\n", last_index_num);
+      last_index_num++;
+    }else{
+      System.out.println("작성자 : 비회원 (익명)");
+      author="비회원 (익명)";
+      System.out.printf("제목 : ");
+      title = sc.nextLine();
+      System.out.printf("내용 : ");
+      body = sc.nextLine();
+      article.put(last_index_num, new Article(last_index_num,author, title, body));
+      System.out.printf("%d번 게시물이 등록되었습니다.\n", last_index_num);
+      last_index_num++;
+    }
   }
 
   // 최근 게시판 출력 메서드
@@ -60,7 +80,7 @@ public class Main {
     Scanner sc = new Scanner(System.in);
     String input = "";
     System.out.println("테스트 데이터 개수 입력 :");
-    CreateTestArticle(sc.nextInt());
+    //CreateTestArticle(sc.nextInt());
     while (true) {
       String author= "",title="",body=""; // 입력 변수 : 작성자, 제목, 내용
       System.out.print("명령) ");
@@ -69,24 +89,7 @@ public class Main {
       if (input.equals("exit")) {
         break;
       } else if (rq.getUrl().equals("/usr/article/write")) {
-        Map<String,String> params=rq.getParam();
-        System.out.printf("== 게시물 등록 ==\n");
-        if(params.containsKey("author")){
-          System.out.println("작성자 : "+params.get("author"));
-          System.out.printf("제목 : ");
-          title = sc.nextLine();
-          System.out.printf("내용 : ");
-          body = sc.nextLine();
-          CreateArticle(params.get("author"),title, body);
-        }else{
-          System.out.println("작성자 : 비회원 (익명)");
-          author="비회원 (익명)";
-          System.out.printf("제목 : ");
-          title = sc.nextLine();
-          System.out.printf("내용 : ");
-          body = sc.nextLine();
-          CreateArticle(author,title, body);
-        }
+          CreateArticle(rq,sc);
       } else if (rq.getUrl().equals("/usr/article/detail")) {
         Map<String, String> param = rq.getParam();
         try {
@@ -156,7 +159,7 @@ public class Main {
       }
     }
     for (Integer num : article.keySet()) {
-      System.out.println(num + " : " + article.get(num));
+      System.out.println(num + " - " + article.get(num));
     }
     System.out.println("== 프로그램 종료 ==");
     sc.close();
