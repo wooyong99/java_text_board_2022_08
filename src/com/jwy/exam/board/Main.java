@@ -1,6 +1,5 @@
 package com.jwy.exam.board;
 
-
 import java.util.*;
 
 public class Main {
@@ -11,17 +10,19 @@ public class Main {
 
   // 테스트 입력 데이터 메서드
   static void CreateTestArticle() {
-    CreateArticle("제목 1", "내용 1");
-    CreateArticle("제목 2", "내용 2");
-    CreateArticle("제목 3", "내용 3");
-    CreateArticle("제목 42", "내용 4");
-    CreateArticle("제목 5", "내용 5");
-    CreateArticle("제목 62", "내용 6");
+    System.out.println("== 테스트 데이터 생성 시작 ==");
+    CreateArticle("사용자1","제목 1", "내용 1");
+    CreateArticle("사용자2","제목 2", "내용 2");
+    CreateArticle("사용자3","제목 3", "내용 3");
+    CreateArticle("사용자4","제목 42", "내용 4");
+    CreateArticle("사용자5","제목 5", "내용 5");
+    CreateArticle("사용자6","제목 62", "내용 6");
+    System.out.println("== 테스트 데이터 생성 종료 ==");
   }
 
   // 게시글 생성 메서드
-  static void CreateArticle(String title, String body) {
-    article.put(last_index_num, new Article(last_index_num, title, body));
+  static void CreateArticle(String author, String title, String body) {
+    article.put(last_index_num, new Article(last_index_num,author, title, body));
     System.out.printf("%d번 게시물이 등록되었습니다.\n", last_index_num);
     last_index_num++;
   }
@@ -29,13 +30,13 @@ public class Main {
   // 최근 게시판 출력 메서드
   static void ArticleDetail() {
     System.out.println("== 최근 게시판 상세보기 ==");
-    System.out.printf("번호 : %d\n제목 : %s\n내용 : %s\n", article.get(last_index_num - 1).id, article.get(last_index_num - 1).title, article.get(last_index_num - 1).body);
+    System.out.printf("번호 : %d\n제목 : %s\n내용 : %s\n", article.get(last_index_num - 1).pk, article.get(last_index_num - 1).title, article.get(last_index_num - 1).body);
   }
 
   // 입력 번호 게시글 출력 메서드
   static void ArticleDetail(int article_num) throws IndexOutOfBoundsException {
     System.out.println("== 게시판 상세보기 ==");
-    System.out.printf("번호 : %d\n제목 : %s\n내용 : %s\n", article.get(article_num).id, article.get(article_num).title, article.get(article_num).body);
+    System.out.printf("번호 : %d\n작성자 : %s\n제목 : %s\n내용 : %s\n", article.get(article_num).pk,article.get(article_num).author, article.get(article_num).title, article.get(article_num).body);
   }
 
   // 게시글 업데이트 메서드
@@ -43,7 +44,7 @@ public class Main {
     Article select_article = article.get(article_num);
     select_article.title = update_title;
     select_article.body = update_body;
-
+    System.out.println(article_num+"번 게시글이 업데이트 되었습니다.");
   }
   //  게시글 검색 메서드
   static List<Article> ArticleSearch(String search_title){
@@ -63,20 +64,31 @@ public class Main {
     String input = "";
     CreateTestArticle();
     while (true) {
-      String title = "";
-      String body = "";
+      String author= "",title="",body=""; // 입력 변수 : 작성자, 제목, 내용
       System.out.print("명령) ");
       input = sc.nextLine();
       Rq rq = new Rq(input);
       if (input.equals("exit")) {
         break;
       } else if (rq.getUrl().equals("/usr/article/write")) {
+        Map<String,String> params=rq.getParam();
         System.out.printf("== 게시물 등록 ==\n");
-        System.out.printf("제목 : ");
-        title = sc.nextLine();
-        System.out.printf("내용 : ");
-        body = sc.nextLine();
-        CreateArticle(title, body);
+        if(params.containsKey("author")){
+          System.out.println("작성자 : "+params.get("author"));
+          System.out.printf("제목 : ");
+          title = sc.nextLine();
+          System.out.printf("내용 : ");
+          body = sc.nextLine();
+          CreateArticle(params.get("author"),title, body);
+        }else{
+          System.out.println("작성자 : 비회원 (익명)");
+          author="비회원 (익명)";
+          System.out.printf("제목 : ");
+          title = sc.nextLine();
+          System.out.printf("내용 : ");
+          body = sc.nextLine();
+          CreateArticle(author,title, body);
+        }
       } else if (rq.getUrl().equals("/usr/article/detail")) {
         Map<String, String> param = rq.getParam();
         try {
@@ -95,18 +107,18 @@ public class Main {
         Map<String, String> param = rq.getParam();
         System.out.println("== 게시물 리스트 ==");
         System.out.println("--------------------");
-        System.out.println("번호 / 제목");
+        System.out.println("번호 / 작성자 / 제목");
         System.out.println("--------------------");
         if(param.containsKey("searchKeyword")){
           result_list=ArticleSearch(param.get("searchKeyword"));
         }
         if (param.containsKey("orderBy") && param.get("orderBy").equals("idAsc")) {
           for (Article result : result_list) {
-            System.out.println(result.id + " / " + result.title);
+            System.out.println(result.pk + " / " +result.author + " / " +result.title);
           }
         } else {
           for (int i = result_list.size()-1; i >=0; i--) {
-            System.out.println(result_list.get(i).id + " / " + result_list.get(i).title);
+            System.out.println(result_list.get(i).pk + " / " + result_list.get(i).author + " / " +result_list.get(i).title);
           }
         }
       } else if (rq.getUrl().equals("/usr/article/update")) {
@@ -151,19 +163,27 @@ public class Main {
 
 // 게시글 Class
 class Article {
-  int id;
+  int pk;
+  String author;
   String title, body;
 
-  // 매개변수 (아이디, 제목, 내용)를 갖는 생성자.
-  Article(int id, String title, String body) {
-    this.id = id;
+  // 회원 게시글 생성자 (고유번호, 사용자이름, 제목, 내용)
+  Article(int pk, String author,String title, String body) {
+    this.pk = pk;
+    this.author=author;
+    this.title = title;
+    this.body = body;
+  }
+  // 비회원 (익명) 게시글 생성자 (고유번호, 제목, 내용)
+  Article(int pk,String title, String body) {
+    this.pk = pk;
     this.title = title;
     this.body = body;
   }
 
   // 출력 형태 : "id : 아이디 / title : 제목 / body : 내용"
   public String toString() {
-    return "id : " + id + " / title : " + title + " / body : " + body;
+    return "id : " + pk + " / author : "+author+" / title : " + title + " / body : " + body;
   }
 }
 
