@@ -4,10 +4,19 @@ import java.util.*;
 
 public class Main {
   public static void main(String args[]){
-    String queryString="/usr/article/detail?id3";
+   /* String queryString="/usr/article/detail?id3";
     Rq rq=new Rq(queryString);
     System.out.println("urlpath : "+rq.getUrl());
-    System.out.println("params : "+rq.getParam());
+    System.out.println("params : "+rq.getParam());*/
+
+    List<String> arr=new ArrayList<>();
+    arr.add("a");
+    arr.add("b");
+    arr.add("c");
+    arr.add("d");
+    System.out.println(arr);
+    arr=Util2.reverseList(arr);
+    System.out.println(arr);
   }
 }
 class Rq{
@@ -66,5 +75,13 @@ class Util2{
   }
   static String getUrlPathFromUrl(String queryString){
     return queryString.split("\\?",2)[0];
+  }
+  public static<T> List<T> reverseList(List<T> list) {
+    List<T> reverse = new ArrayList<>(list.size());
+
+    for ( int i = list.size() - 1; i >= 0; i-- ) {
+      reverse.add(list.get(i));
+    }
+    return reverse;
   }
 }

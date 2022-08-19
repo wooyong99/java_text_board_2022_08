@@ -9,15 +9,12 @@ public class Main {
   static Map<Integer, Article> article = new HashMap();
 
   // 테스트 입력 데이터 메서드
-  static void CreateTestArticle() {
+  static void CreateTestArticle(int test_article_count) {
     System.out.println("== 테스트 데이터 생성 시작 ==");
-    CreateArticle("사용자1","제목 1", "내용 1");
-    CreateArticle("사용자2","제목 2", "내용 2");
-    CreateArticle("사용자3","제목 3", "내용 3");
-    CreateArticle("사용자4","제목 42", "내용 4");
-    CreateArticle("사용자5","제목 5", "내용 5");
-    CreateArticle("사용자6","제목 62", "내용 6");
-    System.out.println("== 테스트 데이터 생성 종료 ==");
+    for(int i=1;i<=test_article_count;i++){
+      CreateArticle("사용자"+i,"제목"+i, "내용"+i);
+    }
+    System.out.println("== 테스트 데이터"+test_article_count+"개 생성 ==");
   }
 
   // 게시글 생성 메서드
@@ -62,7 +59,8 @@ public class Main {
     System.out.println("== 프로그램 시작 ==");
     Scanner sc = new Scanner(System.in);
     String input = "";
-    CreateTestArticle();
+    System.out.println("테스트 데이터 개수 입력 :");
+    CreateTestArticle(sc.nextInt());
     while (true) {
       String author= "",title="",body=""; // 입력 변수 : 작성자, 제목, 내용
       System.out.print("명령) ");
@@ -103,6 +101,7 @@ public class Main {
           System.out.println("최신(마지막) 게시글은 " + article.size() + "번 입니다. 재입력해주세요.");
         }
       } else if (rq.getUrl().equals("/usr/article/list")) {
+        boolean orderByDesc=true;
         List<Article> result_list=new ArrayList<>(article.values());
         Map<String, String> param = rq.getParam();
         System.out.println("== 게시물 리스트 ==");
@@ -113,12 +112,15 @@ public class Main {
           result_list=ArticleSearch(param.get("searchKeyword"));
         }
         if (param.containsKey("orderBy") && param.get("orderBy").equals("idAsc")) {
-          for (Article result : result_list) {
-            System.out.println(result.pk + " / " +result.author + " / " +result.title);
+          orderByDesc=false;
+        }
+        if(orderByDesc){
+          for(Article article:Util.reverseList(result_list)){
+            System.out.println(article.pk+" / "+article.author+" / "+article.title);
           }
-        } else {
-          for (int i = result_list.size()-1; i >=0; i--) {
-            System.out.println(result_list.get(i).pk + " / " + result_list.get(i).author + " / " +result_list.get(i).title);
+        }else{
+          for(Article article:result_list){
+            System.out.println(article.pk+" / "+article.author+" / "+article.title);
           }
         }
       } else if (rq.getUrl().equals("/usr/article/update")) {
@@ -206,12 +208,15 @@ class Rq {
     return url_path;
   }
 }
-
-
-// url 파싱로직 방법2
-// "?" 기준으로 나눈다 -> "&" 기준으로 나눈다. -> "=" 기준으로 나눈다
-// 그리고 최종 bit의 길이가 2개라면 parameter Map에 추가해서 리턴한다.
 class Util {
+  public static<T> List<T> reverseList(List<T> list) {
+    List<T> reverse = new ArrayList<>(list.size());
+
+    for ( int i = list.size() - 1; i >= 0; i-- ) {
+      reverse.add(list.get(i));
+    }
+    return reverse;
+  }
   static Map<String, String> getParameterFromUrl(String queryString) {
     Map<String, String> parameter = new HashMap<>();
     String[] queryStrings = queryString.split("\\?", 2);
