@@ -128,7 +128,36 @@ public class Main {
       }
     }
   }
-
+  // 게시글 삭제 메서드
+  static void ArticleDelete(Rq rq){
+    Map<String, String> params=rq.getParam();
+    int rq_id=0;
+    try{
+      if(params.containsKey("id") == false){
+        throw new NullPointerException();
+      }
+      rq_id=Integer.parseInt(params.get("id"));
+      if(params.containsKey("id") && article.containsKey(rq_id)){
+        article.remove(rq_id);
+        System.out.println("== 게시물 리스트 ==");
+        System.out.println("--------------------");
+        System.out.println("번호 / 작성자 / 제목");
+        System.out.println("--------------------");
+        for(Integer pk:article.keySet()){
+          System.out.println(pk + " / " + article.get(pk).author + " / " + article.get(pk).title);
+        }
+        System.out.println(rq_id+"번 게시글이 삭제되었습니다.");
+      }else if(params.containsKey("id") && (article.containsKey(rq_id)==false)){
+        throw new IndexOutOfBoundsException();
+      }
+    }catch(NullPointerException e){
+      System.out.println("삭제하실 게시물을 입력해주세요.");
+    }catch (NumberFormatException e){
+      System.out.println("id값을 정수 형태로 입력해주세요.");
+    }catch(IndexOutOfBoundsException e){
+      System.out.println(rq_id+"번 게시글을 찾을 수 없습니다");
+    }
+  }
   public static void main(String args[]) {
     Scanner sc = new Scanner(System.in);
     System.out.println("== 게시판 v 0.1 ==");
@@ -148,8 +177,10 @@ public class Main {
         ArticleDetail(rq, sc);
       } else if (rq.getUrl().equals("/usr/article/list")) {     //  List (출력) 메소드
         ArticleSearch(rq);
-      } else if (rq.getUrl().equals("/usr/article/update")) {
+      } else if (rq.getUrl().equals("/usr/article/update")) {   //  Search (검색) 메소드
         Article_Update(rq, sc);
+      }else if(rq.getUrl().equals("/usr/article/delete")){      //  Delete (삭제) 메소드
+        ArticleDelete(rq);
       }
       System.out.println("--------------------");
       System.out.printf("입력된 명령어 : %s\n",input);
