@@ -4,19 +4,10 @@ import java.util.*;
 
 public class Main {
   public static void main(String args[]){
-   /* String queryString="/usr/article/detail?id3";
+    String queryString="EXIT";
     Rq rq=new Rq(queryString);
     System.out.println("urlpath : "+rq.getUrl());
-    System.out.println("params : "+rq.getParam());*/
-
-    List<String> arr=new ArrayList<>();
-    arr.add("a");
-    arr.add("b");
-    arr.add("c");
-    arr.add("d");
-    System.out.println(arr);
-    arr=Util2.reverseList(arr);
-    System.out.println(arr);
+    System.out.println("params : "+rq.getParam());
   }
 }
 class Rq{
