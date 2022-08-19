@@ -9,13 +9,14 @@ public class Main {
   static Map<Integer, Article> article = new HashMap();
 
   // 테스트 입력 데이터 메서드
-  /*static void CreateTestArticle(int test_article_count) {
+  static void CreateTestArticle(int test_article_count) {
     System.out.println("== 테스트 데이터 생성 시작 ==");
     for(int i=1;i<=test_article_count;i++){
-      CreateArticle("사용자"+i,"제목"+i, "내용"+i);
+      article.put(last_index_num,new Article(last_index_num, "사용자"+i,"제목"+i,"내용"+i));
+      last_index_num++;
     }
-    System.out.println("== 테스트 데이터"+test_article_count+"개 생성 ==");
-  }*/
+    System.out.println("== 테스트 데이터 "+(last_index_num-1)+"개 생성 ==");
+  }
 
   // 게시글 생성 메서드
   static void CreateArticle(Rq rq, Scanner sc) {
@@ -75,12 +76,13 @@ public class Main {
   }
 
   public static void main(String args[]) {
+    String input = "";
+    Scanner sc = new Scanner(System.in);
     System.out.println("== 게시판 v 0.1 ==");
     System.out.println("== 프로그램 시작 ==");
-    Scanner sc = new Scanner(System.in);
-    String input = "";
-    System.out.println("테스트 데이터 개수 입력 :");
-    //CreateTestArticle(sc.nextInt());
+    System.out.print("테스트 데이터 개수 입력 :");
+    int testArticle_count=sc.nextInt();
+    CreateTestArticle(testArticle_count);
     while (true) {
       String author= "",title="",body=""; // 입력 변수 : 작성자, 제목, 내용
       System.out.print("명령) ");
@@ -88,9 +90,9 @@ public class Main {
       Rq rq = new Rq(input);
       if (input.equals("exit")) {
         break;
-      } else if (rq.getUrl().equals("/usr/article/write")) {
+      } else if (rq.getUrl().equals("/usr/article/write")) {    //  Create 메소드
           CreateArticle(rq,sc);
-      } else if (rq.getUrl().equals("/usr/article/detail")) {
+      } else if (rq.getUrl().equals("/usr/article/detail")) {   //  Detail 메소드
         Map<String, String> param = rq.getParam();
         try {
           if (param.containsKey("id")) {                        //  경우 1) ArticleDetail 메소드 매개변수의 id 값이 게시글 수보다 크게 전달될때
