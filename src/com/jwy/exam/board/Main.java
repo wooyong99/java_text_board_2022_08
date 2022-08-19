@@ -1,5 +1,7 @@
 package com.jwy.exam.board;
 
+
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Main {
@@ -12,7 +14,9 @@ public class Main {
   static void CreateTestArticle(int test_article_count) {
     System.out.println("== 테스트 데이터 생성 시작 ==");
     for (int i = 1; i <= test_article_count; i++) {
-      article.put(last_index_num, new Article(last_index_num, "사용자" + i, "제목" + i, "내용" + i));
+      Date date=new Date();
+      SimpleDateFormat create_time=new SimpleDateFormat("yy-MM-dd HH:mm");
+      article.put(last_index_num, new Article(last_index_num, "사용자" + i, "제목" + i, "내용" + i,create_time.format(date)));
       last_index_num++;
     }
     System.out.println("       Loading ...   ");
@@ -22,6 +26,8 @@ public class Main {
   // 게시글 생성 메서드
   static void CreateArticle(Rq rq, Scanner sc) {
     String title, body; // 입력 변수 : 작성자, 제목, 내용
+    Date date=new Date();
+    SimpleDateFormat create_time=new SimpleDateFormat("yy-MM-dd HH:mm");
     Map<String, String> params = rq.getParam();
     System.out.printf("== 게시물 등록 ==\n");
     if (params.containsKey("author")) {
@@ -30,7 +36,7 @@ public class Main {
       title = sc.nextLine();
       System.out.printf("내용 : ");
       body = sc.nextLine();
-      article.put(last_index_num, new Article(last_index_num, params.get("author"), title, body));
+      article.put(last_index_num, new Article(last_index_num, params.get("author"), title, body, create_time.format(date)));
       System.out.printf("%d번 게시물이 등록되었습니다.\n", last_index_num);
       last_index_num++;
     } else {
@@ -39,7 +45,7 @@ public class Main {
       title = sc.nextLine();
       System.out.printf("내용 : ");
       body = sc.nextLine();
-      article.put(last_index_num, new Article(last_index_num, title, body));
+      article.put(last_index_num, new Article(last_index_num, title, body, create_time.format(date)));
       System.out.printf("%d번 게시물이 등록되었습니다.\n", last_index_num);
       last_index_num++;
     }
@@ -53,12 +59,12 @@ public class Main {
       if (params.containsKey("id")) {                        //  경우 1) ArticleDetail 메소드 매개변수의 id 값이 게시글 수보다 크게 전달될때
         id = Integer.parseInt(params.get("id"));                          // NullPointerException 발생 ! ( 재입력 요청 )
         System.out.println("== "+params.get("id")+"번 게시판 상세보기 ==");
-        System.out.printf("번호 : %d\n작성자 : %s\n제목 : %s\n내용 : %s\n",
-            article.get(Integer.parseInt(params.get("id"))).pk, article.get(Integer.parseInt(params.get("id"))).author, article.get(Integer.parseInt(params.get("id"))).title, article.get(Integer.parseInt(params.get("id"))).body);
+        System.out.printf("번호 : %d\n작성자 : %s\n제목 : %s\n내용 : %s\n작성일자 : %s\n",
+            article.get(Integer.parseInt(params.get("id"))).pk, article.get(Integer.parseInt(params.get("id"))).author, article.get(Integer.parseInt(params.get("id"))).title, article.get(Integer.parseInt(params.get("id"))).body,article.get(Integer.parseInt(params.get("id"))).create_time);
       } else {                                              //  경우 2) ArticleDetail 메소드 매개변수의 id 값이 정수가 아닌 형태로 전달될때,
         System.out.println("== 최근 게시판 상세보기 ==");                   // NumberFormatException 발생 ! ( 재입력 요청 )
-        System.out.printf("번호 : %d\n작성자 : %s\n제목 : %s\n내용 : %s\n",
-            article.get(article.size()).pk, article.get(article.size()).author, article.get(article.size()).title, article.get(article.size()).body);
+        System.out.printf("번호 : %d\n작성자 : %s\n제목 : %s\n내용 : %s\n작성일자 : %s\n",
+            article.get(article.size()).pk, article.get(article.size()).author, article.get(article.size()).title, article.get(article.size()).body,article.get(article.size()).create_time);
       }
     } catch (NumberFormatException e) {
       System.out.println("id 값이 올바르지 않습니다. 재입력 해주세요.");
@@ -107,7 +113,7 @@ public class Main {
     Map<String, String> params = rq.getParam();
     System.out.println("== 게시물 리스트 ==");
     System.out.println("--------------------");
-    System.out.println("번호 / 작성자 / 제목");
+    System.out.println("번호 / 작성자 / 제목 / 작성일자");
     System.out.println("--------------------");
     if (params.containsKey("searchKeyword")) {
       for (Article article : article.values()) {
@@ -120,11 +126,11 @@ public class Main {
     }
     if (params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
       for (Article article : result_list) {
-        System.out.println(article.pk + " / " + article.author + " / " + article.title);
+        System.out.println(article.pk + " / " + article.author + " / " + article.title+ " / " +article.create_time);
       }
     } else {
       for (Article article : Util.reverseList(result_list)) {
-        System.out.println(article.pk + " / " + article.author + " / " + article.title);
+        System.out.println(article.pk + " / " + article.author + " / " + article.title+ " / " +article.create_time);
       }
     }
   }
@@ -141,10 +147,10 @@ public class Main {
         article.remove(rq_id);
         System.out.println("== 게시물 리스트 ==");
         System.out.println("--------------------");
-        System.out.println("번호 / 작성자 / 제목");
+        System.out.println("번호 / 작성자 / 제목 / 작성일자");
         System.out.println("--------------------");
         for(Integer pk:article.keySet()){
-          System.out.println(pk + " / " + article.get(pk).author + " / " + article.get(pk).title);
+          System.out.println(pk + " / " + article.get(pk).author + " / " + article.get(pk).title+" / " + article.get(pk).create_time);
         }
         System.out.println(rq_id+"번 게시글이 삭제되었습니다.");
       }else if(params.containsKey("id") && (article.containsKey(rq_id)==false)){
@@ -182,8 +188,8 @@ public class Main {
       }else if(rq.getUrl().equals("/usr/article/delete")){      //  Delete (삭제) 메소드
         ArticleDelete(rq);
       }
-      System.out.println("--------------------");
       System.out.printf("입력된 명령어 : %s\n",input);
+      System.out.println("--------------------");
     }
     for (Integer num : article.keySet()) {
       System.out.println(num + " - " + article.get(num));
@@ -195,28 +201,29 @@ public class Main {
   // 게시글 Class
   class Article {
     int pk;
-    String author;
-    String title, body;
+    String author, title, body, create_time;
 
     // 회원 게시글 생성자 (고유번호, 사용자이름, 제목, 내용)
-    Article(int pk, String author, String title, String body) {
+    Article(int pk, String author, String title, String body,String create_time) {
       this.pk = pk;
       this.author = author;
       this.title = title;
       this.body = body;
+      this.create_time=create_time;
     }
 
     // 비회원 (익명) 게시글 생성자 (고유번호, 제목, 내용)
-    Article(int pk, String title, String body) {
+    Article(int pk, String title, String body,String create_time) {
       this.pk = pk;
       this.author="비회원 (익명)";
       this.title = title;
       this.body = body;
+      this.create_time=create_time;
     }
 
     // 출력 형태 : "id : 아이디 / title : 제목 / body : 내용"
     public String toString() {
-      return "id : " + pk + " / author : " + author + " / title : " + title + " / body : " + body;
+      return "pk : " + pk + " / 작성자 : " + author + " / 제목 : " + title + " / 내용 : " + body+ " / 작성일자 : " + create_time;
     }
   }
 
