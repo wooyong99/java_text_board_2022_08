@@ -16,6 +16,7 @@ class ValException extends IOException {
 public class Main {
   static int index_num = 1;
   static Map<Integer, User> map = new HashMap<Integer, User>();
+  Scanner sc = Container.sc;
   // 테스트 유저 데이터 생성 메소드
   static void CreateUser() {
     map.put(index_num, new User_man("정우용", "wulovesk", "we93923!", "010-1111-2222"));
@@ -40,9 +41,8 @@ public class Main {
     } catch (ValException e) {
       System.out.println(e.getMessage());
     }
-    Scanner sc = new Scanner(System.in);
     System.out.println("아이디를 다시 입력해주세요:  ");
-    String id = sc.next();
+    String id = Container.sc.next();
     return id_validation(id);
   }
 
@@ -59,8 +59,7 @@ public class Main {
     } catch (ValException e) {
       System.out.println(e.getMessage());
       System.out.printf("비밀번호를 다시 입력해주세요: ");
-      Scanner sc = new Scanner(System.in);
-      String pw = sc.next();
+      String pw = Container.sc.next();
       return pw_validation(pw);
     }
   }
@@ -76,20 +75,21 @@ public class Main {
   }
 
   // 회원가입 메소드
-  static void SignUp(Scanner sc) {
+  static void SignUp() {
     String name, id, password, num;
     boolean gender;
     System.out.println("==== 회원가입 ====");
     System.out.printf("이름 입력: ");
-    name = sc.next();
+    name = Container.sc.next();
     System.out.printf("아이디 입력: ");
-    id = sc.next();
+    id = Container.sc.next();
     System.out.printf("비밀번호 입력: ");
-    password = sc.next();
+    password = Container.sc.next();
     System.out.printf("전화번호를 입력 : ");
-    num = sc.next();
+    num = Container.sc.next();
     System.out.println("성별 (남자:true/ 여자:false) :");
-    gender = sc.nextBoolean();
+    gender = Container.sc.nextBoolean();
+    System.out.println("    Loading ...   ");
     String validation_id = id_validation(id);
     String validation_pw = pw_validation(password);
     if (gender == true) {
@@ -103,51 +103,48 @@ public class Main {
     }
   }
   // 로그인 메소드
-  static String Login(String id, String password){
-    try{
-      for(Integer user_idx : map.keySet()){
-        if(map.get(user_idx).id.equals(id)&&map.get(user_idx).password.equals(password)){
-          System.out.println("로그인 성공 !");
-          return null;
-        }
+  static String Login(){
+    System.out.print("아이디 입력: ");
+    String id=Container.sc.next();
+    System.out.print("비밀번호 입력: ");
+    String password=Container.sc.next();
+    for(Integer user_idx : map.keySet()){
+      if(map.get(user_idx).id.equals(id) && map.get(user_idx).password.equals(password)){
+        System.out.println(map.get(user_idx).name+"님, 환영합니다 !");
+        return null;
       }
-      throw new NullPointerException("해당 아이디 정보가 없습니다.");
-    }catch(NullPointerException e){
-      System.out.println(e.getMessage());
     }
+    for(Integer user_idx : map.keySet()){
+      if(map.get(user_idx).id.equals(id)){
+        System.out.println("잘못된 비밀번호입니다.");
+        return null;
+      }
+    }
+    System.out.println("해당 정보가 없습니다.");
     return null;
   }
 
   public static void main(String args[]) {
     System.out.println("==프로그램 시작==");
-    Scanner sc = new Scanner(System.in);
     CreateUser();
     while (true) {
-      System.out.println("명령어를 입력해주세요.(login / signup / exit) ?");
-      String input = sc.next();
+      System.out.print("명령어를 입력해주세요.(login / signup / exit) ?");
+      String input=Container.sc.next();
       if (input.equals("signup")) {
-        /*String name, id, password, num;
-        boolean gender;
-        System.out.println("==== 회원가입 ====");
-        System.out.printf("이름/아이디/비밀번호/전화번호를 입력해주세요. \n");
-        name = sc.next();
-        id = sc.next();
-        password = sc.next();
-        num = sc.next();
-        gender = sc.nextBoolean();*/
-        SignUp(sc);
+        SignUp();
+
       } else if(input.equals("login")){
-        System.out.println("아이디, 비밀번호를 입력해주세요.");
-        Login(sc.next(),sc.next());
+        Login();
+
       } else if (input.equals("exit")) {
         break;
       }
     }
     System.out.println("== 프로그램 종료 ==");
     // User 리스트 출력
-    for (Integer index : map.keySet()) {
-      System.out.println(index + " : " + map.get(index));
-    }
+//    for (Integer index : map.keySet()) {
+//      System.out.println(index + " : " + map.get(index));
+//    }
   }
 }
 
