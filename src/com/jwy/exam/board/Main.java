@@ -9,7 +9,7 @@ public class Main {
   static int last_index_num = 1;
   // {키:값} = {last_index_num, Article(last_index_num,title,body)}
   static Map<Integer, Article> article = new HashMap();
-
+  Scanner sc=Container.sc;
   // 테스트 입력 데이터 메서드
   static void CreateTestArticle(int test_article_count) {
     System.out.println("== 테스트 데이터 생성 시작 ==");
@@ -24,7 +24,7 @@ public class Main {
   }
 
   // 게시글 생성 메서드
-  static void CreateArticle(Rq rq, Scanner sc) {
+  static void CreateArticle(Rq rq) {
     String title, body; // 입력 변수 : 작성자, 제목, 내용
     Date date=new Date();
     SimpleDateFormat create_time=new SimpleDateFormat("yy-MM-dd HH:mm");
@@ -33,18 +33,18 @@ public class Main {
     if (params.containsKey("author")) {
       System.out.println("작성자 : " + params.get("author"));
       System.out.printf("제목 : ");
-      title = sc.nextLine();
+      title = Container.sc.nextLine();
       System.out.printf("내용 : ");
-      body = sc.nextLine();
+      body = Container.sc.nextLine();
       article.put(last_index_num, new Article(last_index_num, params.get("author"), title, body, create_time.format(date)));
       System.out.printf("%d번 게시물이 등록되었습니다.\n", last_index_num);
       last_index_num++;
     } else {
       System.out.println("작성자 : 비회원 (익명)");
       System.out.printf("제목 : ");
-      title = sc.nextLine();
+      title = Container.sc.nextLine();
       System.out.printf("내용 : ");
-      body = sc.nextLine();
+      body = Container.sc.nextLine();
       article.put(last_index_num, new Article(last_index_num, title, body, create_time.format(date)));
       System.out.printf("%d번 게시물이 등록되었습니다.\n", last_index_num);
       last_index_num++;
@@ -52,7 +52,7 @@ public class Main {
   }
 
   // 입력 번호 게시글 출력 메서드
-  static void ArticleDetail(Rq rq, Scanner sc) {
+  static void ArticleDetail(Rq rq) {
     Map<String, String> params = rq.getParam();
     int id = 0;
     try {
@@ -74,7 +74,7 @@ public class Main {
   }
 
   // 게시글 업데이트 메서드
-  static void Article_Update(Rq rq, Scanner sc) {
+  static void Article_Update(Rq rq) {
     Map<String, String> params = rq.getParam();
     int id = 0;
     try {
@@ -84,9 +84,9 @@ public class Main {
       id = Integer.parseInt(params.get("id"));   //  id 값이 정수가 아닐때, NumberFormatException 발생 !  (정수 값으로 입력 요청)
       if (params.containsKey("id") && Integer.parseInt(params.get("id")) <= article.size()) {
         System.out.print("변경할 제목을 입력해주세요 :");
-        String update_title = sc.nextLine();
+        String update_title = Container.sc.nextLine();
         System.out.print("변경할 내용을 입력해주세요 :");
-        String update_body = sc.nextLine();
+        String update_body = Container.sc.nextLine();
         Article select_article = article.get(Integer.parseInt(params.get("id")));
         select_article.title = update_title;
         select_article.body = update_body;
@@ -165,26 +165,25 @@ public class Main {
     }
   }
   public static void main(String args[]) {
-    Scanner sc = new Scanner(System.in);
     System.out.println("== 게시판 v 0.1 ==");
     System.out.println("== 프로그램 시작 ==");
     System.out.print("테스트 데이터 개수 입력 :");
-    int testArticle_count = Integer.parseInt(sc.nextLine());
+    int testArticle_count = Integer.parseInt(Container.sc.nextLine());
     CreateTestArticle(testArticle_count);
     while (true) {
       System.out.print("명령) ");
-      String input=sc.nextLine();
+      String input=Container.sc.nextLine();
       Rq rq = new Rq(input);
       if (input.equals("exit")) {
         break;
       } else if (rq.getUrl().equals("/usr/article/write")) {    //  Create (생성) 메소드
-        CreateArticle(rq, sc);
+        CreateArticle(rq);
       } else if (rq.getUrl().equals("/usr/article/detail")) {   //  Detail (읽기) 메소드
-        ArticleDetail(rq, sc);
+        ArticleDetail(rq);
       } else if (rq.getUrl().equals("/usr/article/list")) {     //  List (출력) 메소드
         ArticleSearch(rq);
       } else if (rq.getUrl().equals("/usr/article/update")) {   //  Search (검색) 메소드
-        Article_Update(rq, sc);
+        Article_Update(rq);
       }else if(rq.getUrl().equals("/usr/article/delete")){      //  Delete (삭제) 메소드
         ArticleDelete(rq);
       }
@@ -195,6 +194,6 @@ public class Main {
       System.out.println(num + " - " + article.get(num));
     }
     System.out.println("== 프로그램 종료 ==");
-    sc.close();
+    Container.sc.close();
   }
 }
