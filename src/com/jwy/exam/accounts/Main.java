@@ -18,12 +18,14 @@ public class Main {
   static Map<Integer, User> map = new HashMap<Integer, User>();
   // 테스트 유저 데이터 생성 메소드
   static void CreateUser() {
-    SignUp("정우용", "wulovesk1", "qe134d1!", "1111", true);
-    SignUp("정우용", "wulovesk2", "afv3d13A!", "1111", true);
-    SignUp("정우용", "wulovesk3", "dasc13s1!", "1111", true);
-    SignUp("정우용", "wulovesk4", "134daad!", "1111", true);
-    SignUp("정우용", "wulovesk5", "vvfsx321!", "1111", true);
-    SignUp("정우용", "wulovesk6", "q@ac33A!", "1111", true);
+    map.put(index_num, new User_man("정우용", "wulovesk", "we93923!", "010-1111-2222"));
+    index_num++;
+    map.put(index_num, new User_man("홍길동", "ghdrlfehd", "pxodch1@u#", "010-2222-3322"));
+    index_num++;
+    map.put(index_num, new User_man("피카츄", "vlzkcb112", "addd3w2!", "010-9921-2442"));
+    index_num++;
+    map.put(index_num, new User_man("김철수", "rlacjftn", "zxcxs192#", "010-1231-2352"));
+    index_num++;
   }
   // 아이디 유효성 검사 메소드 ( 8글자 이상, 아이디 중복, 특수문자 포함여부) 검사
   static String id_validation(String input_id) {
@@ -74,20 +76,33 @@ public class Main {
   }
 
   // 회원가입 메소드
-  static void SignUp(String name, String id, String password, String num, boolean gender) {
+  static void SignUp(Scanner sc) {
+    String name, id, password, num;
+    boolean gender;
+    System.out.println("==== 회원가입 ====");
+    System.out.printf("이름 입력: ");
+    name = sc.next();
+    System.out.printf("아이디 입력: ");
+    id = sc.next();
+    System.out.printf("비밀번호 입력: ");
+    password = sc.next();
+    System.out.printf("전화번호를 입력 : ");
+    num = sc.next();
+    System.out.println("성별 (남자:true/ 여자:false) :");
+    gender = sc.nextBoolean();
     String validation_id = id_validation(id);
     String validation_pw = pw_validation(password);
     if (gender == true) {
-      map.put(index_num, new User_man(name, validation_id, validation_pw, num, gender));
+      map.put(index_num, new User_man(name, validation_id, validation_pw, num));
       index_num++;
       System.out.println("회원가입 완료.");
     } else {
-      map.put(index_num, new User_woman(name, validation_id, validation_pw, num, gender));
+      map.put(index_num, new User_woman(name, validation_id, validation_pw, num));
       index_num++;
       System.out.println("회원가입 완료.");
     }
   }
-  // 로그인 메소드 (로그인 시, com.jwy.exam.board.Main 메소드 실행)
+  // 로그인 메소드
   static String Login(String id, String password){
     try{
       for(Integer user_idx : map.keySet()){
@@ -111,7 +126,7 @@ public class Main {
       System.out.println("명령어를 입력해주세요.(login / signup / exit) ?");
       String input = sc.next();
       if (input.equals("signup")) {
-        String name, id, password, num;
+        /*String name, id, password, num;
         boolean gender;
         System.out.println("==== 회원가입 ====");
         System.out.printf("이름/아이디/비밀번호/전화번호를 입력해주세요. \n");
@@ -119,8 +134,8 @@ public class Main {
         id = sc.next();
         password = sc.next();
         num = sc.next();
-        gender = sc.nextBoolean();
-        SignUp(name, id, password, num, gender);
+        gender = sc.nextBoolean();*/
+        SignUp(sc);
       } else if(input.equals("login")){
         System.out.println("아이디, 비밀번호를 입력해주세요.");
         Login(sc.next(),sc.next());

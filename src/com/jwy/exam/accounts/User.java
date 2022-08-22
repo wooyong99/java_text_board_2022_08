@@ -30,16 +30,17 @@ abstract class User {
 }
 
 class User_man extends User {
-  User_man(String name, String id, String password, String num, boolean gender) {
+  String gender="남자";
+  User_man(String name, String id, String password, String num) {
     super(name, id, password, num);
-    this.gender = gender;
   }
 
 }
 
 class User_woman extends User {
-  User_woman(String name, String id, String password, String num, boolean gender) {
+  String gender="여자";
+  User_woman(String name, String id, String password, String num) {
     super(name, id, password, num);
-    this.gender = gender;
+
   }
 }
