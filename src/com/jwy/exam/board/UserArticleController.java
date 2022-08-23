@@ -11,7 +11,7 @@ public class UserArticleController {
   Scanner sc=Container.sc;
   // 테스트 입력 데이터 메서드
   void CreateTestArticle(int test_article_count) {
-    System.out.println("== 테스트 데이터 생성 시작 ==");
+    System.out.println("== 게시글 테스트 데이터 생성 시작 ==");
     for (int i = 1; i <= test_article_count; i++) {
       Date date=new Date();
       SimpleDateFormat create_time=new SimpleDateFormat("yy-MM-dd HH:mm");
@@ -19,7 +19,7 @@ public class UserArticleController {
       last_index_num++;
     }
     System.out.println("       Loading ...   ");
-    System.out.println("== 테스트 데이터 " + (last_index_num - 1) + "개 생성 ==");
+    System.out.println("== 게시글 테스트 데이터 " + (last_index_num - 1) + "개 생성 ==");
   }
 
   // 게시글 생성 메서드
@@ -69,34 +69,23 @@ public class UserArticleController {
   // 게시글 업데이트 메서드
   void Article_Update(Rq rq) {
     Map<String, String> params = rq.getParam();
-    int id = 0;
-    try {
-      if (params.containsKey("id") == false) {
-        throw new NullPointerException();    //  id 값이 null일때, NullPointerException 발생 ! (게시글 번호 작성 요청)
-      }
-      id = Integer.parseInt(params.get("id"));   //  id 값이 정수가 아닐때, NumberFormatException 발생 !  (정수 값으로 입력 요청)
-      if (params.containsKey("id") && Integer.parseInt(params.get("id")) <= article.size()) {
+    int id_param=rq.getIntparam("id",0);
+    if(id_param==0){
+      System.out.println("게시글 번호를 입력해주세요.");
+      return ;
+    }else{
+      Article select_article=article.get(id_param);
+      if(select_article==null){
+        System.out.println(id_param+"번 게시글은 없는 게시글입니다.");
+      }else{
         System.out.print("변경할 제목을 입력해주세요 :");
         String update_title = Container.sc.nextLine();
         System.out.print("변경할 내용을 입력해주세요 :");
         String update_body = Container.sc.nextLine();
-        Article select_article = article.get(Integer.parseInt(params.get("id")));
         select_article.title = update_title;
         select_article.body = update_body;
-        System.out.println(select_article.pk + "번 게시글이 업데이트 되었습니다.");
-      } else if (params.containsKey("id") && Integer.parseInt(params.get("id")) > article.size()) {
-        throw new IndexOutOfBoundsException();   //  id 값이 잘 주입 되었지만, 게시글수 보다 클 경우, IndexOutOfBoundsException 발생 ! (재입력 요청)
-      } else {
-        throw new Exception();    //  예외 경우의 수 발생 시, Exception 발생 ! (오류 메세지 출력)
+        System.out.println(id_param+"번 게시글 변경되었습니다.");
       }
-    } catch (NullPointerException e) {
-      System.out.println("업데이트할 게시글 번호를 입력해주세요.");
-    } catch (NumberFormatException e) {
-      System.out.println("id값은 정수형태로 입력해주세요.");
-    } catch (IndexOutOfBoundsException e) {
-      System.out.println("최신(마지막) 게시글은 " + article.size() + "번 입니다. 재입력해주세요.");
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
     }
   }
 
@@ -116,10 +105,11 @@ public class UserArticleController {
       }
     }
     String order_param=rq.getStrparam("orderBy","");
-    if(order_param.equals("idAsc")){
-      for(Article article:result_list){
-        System.out.println(article.pk + " / " + article.author + " / " + article.title+ " / " +article.create_time);
+    if(order_param.equals("idAsc")) {
+      for (Article article : result_list) {
+        System.out.println(article.pk + " / " + article.author + " / " + article.title + " / " + article.create_time);
       }
+    }else{
       for(Article article:Util.reverseList(result_list)){
         System.out.println(article.pk + " / " + article.author + " / " + article.title+ " / " +article.create_time);
       }

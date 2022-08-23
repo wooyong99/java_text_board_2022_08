@@ -28,7 +28,7 @@ public class App {
         Container.userArticleController.ArticleDelete(rq);
       }else if(rq.getUrl().equals("/usr/member/login")){        //  Login (로그인) 메소드
         Container.userMemberController.Login();
-      }else if(rq.getUrl().equals("/usr/member/signup")){       //  Signuo  (회원가입) 메소드
+      }else if(rq.getUrl().equals("/usr/member/signup")){       //  Signup  (회원가입) 메소드
         Container.userMemberController.Signup();
       }
       System.out.printf("입력된 명령어 : %s\n",input);
