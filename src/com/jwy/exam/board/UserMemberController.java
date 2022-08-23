@@ -68,5 +68,18 @@ public class UserMemberController {
     String login_id=Container.sc.next();
     System.out.print("비밀번호를 입력해주세요 :");
     String login_pw=Container.sc.next();
+    for(Member login_member:members){
+      if(login_member.id.equals(login_id)){
+        if(login_member.pw.equals(login_pw)){
+          System.out.println("로그인 성공 !");
+          return ;
+        }else{
+          System.out.println("비밀번호가 틀렸습니다.");
+          return ;
+        }
+      }
+    }
+    System.out.println("잘못된 아이디입니다.");
+    return ;
   }
 }
