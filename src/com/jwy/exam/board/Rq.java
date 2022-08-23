@@ -13,12 +13,30 @@ class Rq {
     this.url_param = Util.getParameterFromUrl(url);
     this.url_path = Util.getUrlPathFromUrl(url);
   }
+  public int getIntparam(String paramname, int defaultValue){
+    if(url_param.containsKey(paramname)==false){
+      return defaultValue;
+    }
+    try{
+      return Integer.parseInt(url_param.get(paramname));
+    }catch(NumberFormatException e){
+      return  defaultValue;
+    }
+  }
+  public String getStrparam(String paramname, String defaultValue){
+    if(url_param.containsKey(paramname)==false){
+      return defaultValue;
+    }
+    return url_param.get(paramname);
+  }
   //  Parameter를 return 하는 메소드이다.
   public Map<String, String> getParam() {
+
     return url_param;
   }
   //  URLPath를 return 하는 메소드이다.
   public String getUrl() {
+
     return url_path;
   }
 }

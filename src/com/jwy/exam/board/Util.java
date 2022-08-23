@@ -15,6 +15,7 @@ class Util {
     }
     return reverse;
   }
+
   //  매개변수로 받은 queryString에서 Parmeter를 return 하는 메소드이다.
   static Map<String, String> getParameterFromUrl(String queryString) {
     Map<String, String> parameter = new HashMap<>();
