@@ -75,9 +75,7 @@ public class UserArticleController {
       return ;
     }else{
       Article select_article=article.get(id_param);
-      if(select_article==null){
-        System.out.println(id_param+"번 게시글은 없는 게시글입니다.");
-      }else{
+      if(article.containsKey(id_param)){
         System.out.print("변경할 제목을 입력해주세요 :");
         String update_title = Container.sc.nextLine();
         System.out.print("변경할 내용을 입력해주세요 :");
@@ -85,6 +83,8 @@ public class UserArticleController {
         select_article.title = update_title;
         select_article.body = update_body;
         System.out.println(id_param+"번 게시글 변경되었습니다.");
+      }else{
+        System.out.println(id_param+"번 게시글은 없는 게시글입니다.");
       }
     }
   }
@@ -118,31 +118,18 @@ public class UserArticleController {
   // 게시글 삭제 메서드
   void ArticleDelete(Rq rq){
     Map<String, String> params=rq.getParam();
-    int rq_id=0;
-    try{
-      if(params.containsKey("id") == false){
-        throw new NullPointerException();
+    int id_param=rq.getIntparam("id",0);
+    if(id_param==0){
+      System.out.println("삭제할 게시글 번호를 입력해주세요.");
+      return ;
+    }else{
+      if(article.containsKey(id_param)){
+        article.remove(id_param);
+        System.out.println(id_param+"번 게시글이 삭제되었습니다.");
+        return;
+      }else{
+        System.out.println(id_param+"번 게시글을 찾을 수 없습니다.");
       }
-      rq_id=Integer.parseInt(params.get("id"));
-      if(params.containsKey("id") && article.containsKey(rq_id)){
-        article.remove(rq_id);
-        System.out.println("== 게시물 리스트 ==");
-        System.out.println("--------------------");
-        System.out.println("번호 / 작성자 / 제목 / 작성일자");
-        System.out.println("--------------------");
-        for(Integer pk:article.keySet()){
-          System.out.println(pk + " / " + article.get(pk).author + " / " + article.get(pk).title+" / " + article.get(pk).create_time);
-        }
-        System.out.println(rq_id+"번 게시글이 삭제되었습니다.");
-      }else if(params.containsKey("id") && (article.containsKey(rq_id)==false)){
-        throw new IndexOutOfBoundsException();
-      }
-    }catch(NullPointerException e){
-      System.out.println("삭제하실 게시물을 입력해주세요.");
-    }catch (NumberFormatException e){
-      System.out.println("id값을 정수 형태로 입력해주세요.");
-    }catch(IndexOutOfBoundsException e){
-      System.out.println(rq_id+"번 게시글을 찾을 수 없습니다");
-    }
   }
+}
 }
