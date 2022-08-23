@@ -26,9 +26,9 @@ public class App {
         Container.userArticleController.Article_Update(rq);
       }else if(rq.getUrl().equals("/usr/article/delete")){      //  Delete (삭제) 메소드
         Container.userArticleController.ArticleDelete(rq);
-      }else if(rq.getUrl().equals("/usr/member/login")){
+      }else if(rq.getUrl().equals("/usr/member/login")){        //  Login (로그인) 메소드
         Container.userMemberController.Login();
-      }else if(rq.getUrl().equals("/usr/member/signup")){
+      }else if(rq.getUrl().equals("/usr/member/signup")){       //  Signuo  (회원가입) 메소드
         Container.userMemberController.Signup();
       }
       System.out.printf("입력된 명령어 : %s\n",input);
@@ -36,6 +36,9 @@ public class App {
     }
     for (Integer num : Container.userArticleController.article.keySet()) {
       System.out.println(num + " - " + Container.userArticleController.article.get(num));
+    }
+    for(Member member:Container.userMemberController.members){
+      System.out.println(member.toString());
     }
     System.out.println("== 프로그램 종료 ==");
     Container.sc.close();

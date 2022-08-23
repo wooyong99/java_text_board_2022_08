@@ -24,10 +24,10 @@ class Rq {
     }
   }
   public String getStrparam(String paramname, String defaultValue){
-    if(url_param.containsKey(paramname)==false){
-      return defaultValue;
+    if(url_param.containsKey(paramname)){
+      return url_param.get(paramname);
     }
-    return url_param.get(paramname);
+    return defaultValue;
   }
   //  Parameter를 return 하는 메소드이다.
   public Map<String, String> getParam() {

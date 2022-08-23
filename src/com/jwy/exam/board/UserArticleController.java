@@ -52,23 +52,17 @@ public class UserArticleController {
 
   // 입력 번호 게시글 출력 메서드
   void ArticleDetail(Rq rq) {
-    Map<String, String> params = rq.getParam();
-    int id = 0;
-    try {
-      if (params.containsKey("id")) {                        //  경우 1) ArticleDetail 메소드 매개변수의 id 값이 게시글 수보다 크게 전달될때
-        id = Integer.parseInt(params.get("id"));                          // NullPointerException 발생 ! ( 재입력 요청 )
-        System.out.println("== "+params.get("id")+"번 게시판 상세보기 ==");
+    int param=rq.getIntparam("id",0);
+    if(param==0){
+      System.out.println("id값을 입력해주세요.");
+    }else{
+      try{
         System.out.printf("번호 : %d\n작성자 : %s\n제목 : %s\n내용 : %s\n작성일자 : %s\n",
-            article.get(Integer.parseInt(params.get("id"))).pk, article.get(Integer.parseInt(params.get("id"))).author, article.get(Integer.parseInt(params.get("id"))).title, article.get(Integer.parseInt(params.get("id"))).body,article.get(Integer.parseInt(params.get("id"))).create_time);
-      } else {                                              //  경우 2) ArticleDetail 메소드 매개변수의 id 값이 정수가 아닌 형태로 전달될때,
-        System.out.println("== 최근 게시판 상세보기 ==");                   // NumberFormatException 발생 ! ( 재입력 요청 )
-        System.out.printf("번호 : %d\n작성자 : %s\n제목 : %s\n내용 : %s\n작성일자 : %s\n",
-            article.get(article.size()).pk, article.get(article.size()).author, article.get(article.size()).title, article.get(article.size()).body,article.get(article.size()).create_time);
+        article.get(param).pk, article.get(param).author, article.get(param).title, article.get(param).body,article.get(param).create_time);
+      }catch(NullPointerException e){
+        System.out.println(param+"번 게시글은 없는 게시글입니다.");
       }
-    } catch (NumberFormatException e) {
-      System.out.println("id 값이 올바르지 않습니다. 재입력 해주세요.");
-    } catch (NullPointerException e) {
-      System.out.println(params.get("id") + "번 게시글은 없는 게시글입니다.");
+
     }
   }
 
@@ -111,24 +105,22 @@ public class UserArticleController {
     List<Article> result_list = new ArrayList<>();
     Map<String, String> params = rq.getParam();
     System.out.println("== 게시물 리스트 ==");
-    System.out.println("--------------------");
-    System.out.println("번호 / 작성자 / 제목 / 작성일자");
-    System.out.println("--------------------");
-    if (params.containsKey("searchKeyword")) {
+    String keyword_param=rq.getStrparam("searchKeyword","");
+    if(keyword_param==""){
+      result_list=new ArrayList<>(article.values());
+    }else{
       for (Article article : article.values()) {
         if (article.title.contains(params.get("searchKeyword"))) {
           result_list.add(article);
         }
       }
-    } else {
-      result_list = new ArrayList<>(article.values());
     }
-    if (params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
-      for (Article article : result_list) {
+    String order_param=rq.getStrparam("orderBy","");
+    if(order_param.equals("idAsc")){
+      for(Article article:result_list){
         System.out.println(article.pk + " / " + article.author + " / " + article.title+ " / " +article.create_time);
       }
-    } else {
-      for (Article article : Util.reverseList(result_list)) {
+      for(Article article:Util.reverseList(result_list)){
         System.out.println(article.pk + " / " + article.author + " / " + article.title+ " / " +article.create_time);
       }
     }

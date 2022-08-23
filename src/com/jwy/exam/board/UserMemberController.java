@@ -12,7 +12,7 @@ public class UserMemberController {
   static List<Member> members=new ArrayList<>();
 
   // 아이디 유효성 검사 메소드 ( 8글자 이상, 아이디 중복, 특수문자 포함여부) 검사
-  static boolean id_validation(String input_id) {
+  boolean id_validation(String input_id) {
     Pattern p = Pattern.compile("^[a-z0-9가-힣A-Zㅏ-ㅣㄱ-ㅎ]*$");
     Matcher m = p.matcher(input_id);
     if (input_id.length() >= 8 && id_check(input_id) && m.matches() == true) {
@@ -23,7 +23,7 @@ public class UserMemberController {
   }
 
   // 비밀번호 유효성 검사 메소드 ( 영문, 숫자, 특수문자 포함 여부 )
-  static boolean pw_validation(String input_pw) {
+  boolean pw_validation(String input_pw) {
     Pattern p = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$");
     Matcher m = p.matcher(input_pw);
     if (m.matches() == true) {
@@ -34,7 +34,7 @@ public class UserMemberController {
   }
 
   // 아이디 중복 체크 메소드
-  static boolean id_check(String input_id) {
+  boolean id_check(String input_id) {
     for (Member member : members) {
       if (member.id.equals(input_id)) {
         return false;
