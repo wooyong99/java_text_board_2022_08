@@ -13,4 +13,7 @@ public class Member {
     this.pw=pw;
     this.age=age;
   }
+  public String toString(){
+    return "번호: "+pk+" / 이름 : "+name+" / 아이디 : "+name+" / 비밀번호 : "+pw+" / 나이 : "+age ;
+  }
 }

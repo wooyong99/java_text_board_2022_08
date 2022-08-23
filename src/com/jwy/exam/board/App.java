@@ -28,6 +28,8 @@ public class App {
         Container.userArticleController.ArticleDelete(rq);
       }else if(rq.getUrl().equals("/usr/member/login")){
         Container.userMemberController.Login();
+      }else if(rq.getUrl().equals("/usr/member/signup")){
+        Container.userMemberController.Signup();
       }
       System.out.printf("입력된 명령어 : %s\n",input);
       System.out.println("--------------------");
