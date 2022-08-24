@@ -39,4 +39,8 @@ class Rq {
 
     return url_path;
   }
+  public void setSessionAttri(String key,Object value){
+    Session session = Container.session;
+    session.setAttribute(key,value);
+  }
 }

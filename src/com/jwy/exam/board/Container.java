@@ -6,4 +6,5 @@ public class Container {
   static Scanner sc=new Scanner(System.in);
   static UserArticleController userArticleController=new UserArticleController();
   static UserMemberController userMemberController=new UserMemberController();
+  static Session session=new Session();
 }
