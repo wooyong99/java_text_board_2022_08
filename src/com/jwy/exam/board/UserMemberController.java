@@ -56,7 +56,12 @@ public class UserMemberController {
     return true;
   }
 
-  void Signup() {
+  void Signup(Session session) {
+    Member logined_member=(Member) session.getAttribute("logined_member");
+    if(logined_member != null){
+      System.out.println("로그인 상태입니다.");
+      return ;
+    }
     Date date = new Date();
     SimpleDateFormat regdate = new SimpleDateFormat("yy-MM-dd HH:mm");
     System.out.println("=== 회원가입 ===");

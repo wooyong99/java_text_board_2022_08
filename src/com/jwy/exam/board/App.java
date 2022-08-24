@@ -49,7 +49,7 @@ public class App {
         Container.userMemberController.Logout(session);
 
       } else if(rq.getUrl().equals("/usr/member/signup")){       //  Signup  (회원가입) 메소드
-        Container.userMemberController.Signup();
+        Container.userMemberController.Signup(session);
 
       }
       System.out.printf("입력된 명령어 : %s\n",input);
