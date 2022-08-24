@@ -7,9 +7,12 @@ public class App {
   public static void main() {
     System.out.println("== 게시판 v 0.1 ==");
     System.out.println("== 프로그램 시작 ==");
-    System.out.print("테스트 데이터 개수 입력 :");
+    System.out.print("게시글 테스트 데이터 개수 입력 :");
     int testArticle_count = Integer.parseInt(Container.sc.nextLine());
     Container.userArticleController.CreateTestArticle(testArticle_count);
+    System.out.print("회원 테스트 데이터 개수 입력 :");
+    int testMember_count = Integer.parseInt(Container.sc.nextLine());
+    Container.userMemberController.CreateTestMember(testMember_count);
     while (true) {
       System.out.print("명령) ");
       String input=Container.sc.nextLine();
