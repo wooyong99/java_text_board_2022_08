@@ -28,7 +28,7 @@ public class App {
       if (input.equals("exit")) {
         break;
       } else if (rq.getUrl().equals("/usr/article/write")) {    //  Create (생성) 메소드
-        Container.userArticleController.CreateArticle(rq);
+        Container.userArticleController.CreateArticle(rq,session);
 
       } else if (rq.getUrl().equals("/usr/article/detail")) {   //  Detail (읽기) 메소드
         Container.userArticleController.ArticleDetail(rq);

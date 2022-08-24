@@ -8,7 +8,6 @@ public class UserArticleController {
   static int last_index_num = 1;
   // {키:값} = {last_index_num, Article(last_index_num,title,body)}
   static Map<Integer, Article> article = new HashMap();
-  Scanner sc=Container.sc;
   // 테스트 입력 데이터 메서드
   void CreateTestArticle(int test_article_count) {
     System.out.println("== 게시글 테스트 데이터 생성 시작 ==");
@@ -23,13 +22,25 @@ public class UserArticleController {
   }
 
   // 게시글 생성 메서드
-  void CreateArticle(Rq rq) {
-    String title, body; // 입력 변수 : 작성자, 제목, 내용
+  void CreateArticle(Rq rq,Session session) {
+    Member logined_member=(Member) session.getAttribute("logined_member");
+    String title, body; // 입력 변수 : 제목, 내용
     Date date=new Date();
     SimpleDateFormat create_time=new SimpleDateFormat("yy-MM-dd HH:mm");
     Map<String, String> params = rq.getParam();
     System.out.printf("== 게시물 등록 ==\n");
-    if (params.containsKey("author")) {
+    if(logined_member!=null){
+      System.out.println("작성자 : "+logined_member.id);
+      System.out.printf("제목 : ");
+      title = Container.sc.nextLine();
+      System.out.printf("내용 : ");
+      body = Container.sc.nextLine();
+      article.put(last_index_num, new Article(last_index_num, logined_member.id, title, body, create_time.format(date)));
+      System.out.printf("%d번 게시물이 등록되었습니다.\n", last_index_num);
+      last_index_num++;
+    }
+
+    /*if (params.containsKey("author")) {
       System.out.println("작성자 : " + params.get("author"));
       System.out.printf("제목 : ");
       title = Container.sc.nextLine();
@@ -47,7 +58,7 @@ public class UserArticleController {
       article.put(last_index_num, new Article(last_index_num, title, body, create_time.format(date)));
       System.out.printf("%d번 게시물이 등록되었습니다.\n", last_index_num);
       last_index_num++;
-    }
+    }*/
   }
 
   // 입력 번호 게시글 출력 메서드
