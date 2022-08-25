@@ -59,12 +59,11 @@ public class UserMemberController {
     }
     return true;
   }
-
-  public void Signup(Session session) {
-    Member logined_member=(Member) session.getAttribute("logined_member");
-    if(logined_member != null){
+  //  회원가입 메소드
+  public void Signup(Rq rq) {
+    if(rq.islogined()){
       System.out.println("로그인 상태입니다.");
-      return ;
+      return;
     }
     Date date = new Date();
     SimpleDateFormat regdate = new SimpleDateFormat("yy-MM-dd HH:mm");
@@ -100,11 +99,10 @@ public class UserMemberController {
     return null;
   }
   //  로그인메소드
-  public void Login(Rq rq, Session session) {
-    Member logined_member=(Member) session.getAttribute("logined_member");
-    if(logined_member!=null){
-      System.out.println("로그인을 하셨습니다.");
-      return;
+  public void Login(Rq rq) {
+    if(rq.islogined()){
+      System.out.println("로그인 상태입니다.");
+      return ;
     }
     System.out.println("=== 로그인 ===");
     System.out.print("아이디를 입력해주세요 :");
@@ -118,19 +116,19 @@ public class UserMemberController {
     String login_pw = Container.getSc().nextLine();
     if(login_pw.equals(login_member.getPw())){
       System.out.println(login_member.getId()+"님 로그인 성공 !");
-      rq.setSessionAttri("logined_member",login_member);
+      rq.login(login_member);
+
     }else{
       System.out.println("비밀번호를 다시 입력해주세요.");
     }
   }
   //  로그아웃 메소드
-  public void Logout(Session session) {
-    Member logined_member=(Member) session.getAttribute("logined_member");
-    if(logined_member!=null){
-      session.removeAttribute("logined_member");
-      System.out.println("로그아웃 되었습니다");
-      return ;
+  public void Logout(Rq rq) {
+    if(rq.islogined()){
+      rq.logout();
+      System.out.println("로그아웃 되었습니다.");
+    }else{
+      System.out.println("로그인 후 이용해주세요.");
     }
-    System.out.println("로그인을 이용해주세요.");
   }
 }

@@ -15,20 +15,20 @@ public class App {
     Container.getUserMemberController().CreateTestMember(testMember_count);
     Session session = Container.getSession();
     while (true) {
+      Rq rq=new Rq();
       Member logined_member=(Member) session.getAttribute("logined_member");
-      String prompt="";
-      if(logined_member==null){
-        prompt="명령";
-      }else{
+      String prompt="명령";
+      if(rq.islogined()){
         prompt=logined_member.getId();
       }
       System.out.printf("%s ) ",prompt);
       String input=Container.getSc().nextLine();
-      Rq rq = new Rq(input);
+      rq.getUrlPathFromUrl(input);
+      rq.getParameterFromUrl(input);
       if (input.equals("exit")) {
         break;
       } else if (rq.getUrl().equals("/usr/article/write")) {    //  Create (생성) 메소드
-        Container.getUserArticleController().CreateArticle(rq,session);
+        Container.getUserArticleController().CreateArticle(rq);
 
       } else if (rq.getUrl().equals("/usr/article/detail")) {   //  Detail (읽기) 메소드
         Container.getUserArticleController().ArticleDetail(rq);
@@ -43,13 +43,13 @@ public class App {
         Container.getUserArticleController().ArticleDelete(rq);
 
       }else if(rq.getUrl().equals("/usr/member/login")){        //  Login (로그인) 메소드
-        Container.getUserMemberController().Login(rq,session);
+        Container.getUserMemberController().Login(rq);
 
       }else if(rq.getUrl().equals("/usr/member/logout")){       //  Logout  (로그아웃) 메소드
-        Container.getUserMemberController().Logout(session);
+        Container.getUserMemberController().Logout(rq);
 
       } else if(rq.getUrl().equals("/usr/member/signup")){       //  Signup  (회원가입) 메소드
-        Container.getUserMemberController().Signup(session);
+        Container.getUserMemberController().Signup(rq);
 
       }
       System.out.printf("입력된 명령어 : %s\n",input);

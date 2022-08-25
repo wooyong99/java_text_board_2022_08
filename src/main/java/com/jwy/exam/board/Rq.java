@@ -1,6 +1,7 @@
 package com.jwy.exam.board;
 
 import com.jwy.exam.board.container.Container;
+import com.jwy.exam.board.dto.Member;
 import com.jwy.exam.board.util.Util;
 
 import java.util.Map;
@@ -16,7 +17,11 @@ import java.util.Map;
     this.url_param = Util.getParameterFromUrl(url);
     this.url_path = Util.getUrlPathFromUrl(url);
   }
-  public int getIntparam(String paramname, int defaultValue){
+
+    public Rq() {
+    }
+
+    public int getIntparam(String paramname, int defaultValue){
     if(url_param.containsKey(paramname)==false){
       return defaultValue;
     }
@@ -46,4 +51,29 @@ import java.util.Map;
     Session session = Container.getSession();
     session.setAttribute(key,value);
   }
-}
+  public Object getSessionAttri(String key){
+    Session session = Container.getSession();
+    return session.getAttribute(key);
+  }
+  public void login(Member login_member){
+    Session session=Container.getSession();
+    session.setAttribute("logined_member",login_member);
+  }
+  public boolean islogined() {
+    Session session = Container.getSession();
+    return session.logined();
+  }
+
+    public void getUrlPathFromUrl(String url) {
+      this.url_path=Util.getUrlPathFromUrl(url);
+  }
+
+    public void getParameterFromUrl(String url) {
+      this.url_param=Util.getParameterFromUrl(url);
+    }
+
+    public void logout() {
+      Session session = Container.getSession();
+      session.removeAttribute("logined_member");
+    }
+  }

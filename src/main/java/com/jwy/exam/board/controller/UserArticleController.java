@@ -29,14 +29,13 @@ public class UserArticleController {
   }
 
   // 게시글 생성 메서드
-  public void CreateArticle(Rq rq, Session session) {
-    Member logined_member=(Member) session.getAttribute("logined_member");
+  public void CreateArticle(Rq rq) {
     String title, body; // 입력 변수 : 제목, 내용
     Date date=new Date();
     SimpleDateFormat create_time=new SimpleDateFormat("yy-MM-dd HH:mm");
-    Map<String, String> params = rq.getParam();
     System.out.printf("== 게시물 등록 ==\n");
-    if(logined_member!=null){
+    if(rq.islogined()){
+      Member logined_member=(Member) rq.getSessionAttri("logined_member");
       System.out.println("작성자 : "+logined_member.getId());
       System.out.printf("제목 : ");
       title = Container.getSc().nextLine();
@@ -45,7 +44,7 @@ public class UserArticleController {
       article.put(last_index_num, new Article(last_index_num, logined_member.getId(), title, body, create_time.format(date)));
       System.out.printf("%d번 게시물이 등록되었습니다.\n", last_index_num);
       last_index_num++;
-    } else{
+    }else{
       System.out.println("작성자 : 비회원 (익명)");
       System.out.printf("제목 : ");
       title = Container.getSc().nextLine();
