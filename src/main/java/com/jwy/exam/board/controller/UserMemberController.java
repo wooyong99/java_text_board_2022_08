@@ -50,10 +50,11 @@ public class UserMemberController {
     }
   }
 
-  // 아이디 중복 체크 메소드
+  // 아이디 중복 체크 메소드 ( true : 사용가능 / false: 사용불가 )
   boolean id_check(String input_id) {
     for (Member member : members) {
       if (member.getId().equals(input_id)) {
+        System.out.println(member.getId());
         return false;
       }
     }
@@ -72,6 +73,10 @@ public class UserMemberController {
     String signup_name = Container.getSc().nextLine();
     System.out.print("ID를 입력해주세요: ");
     String signup_id = Container.getSc().nextLine();
+    if(!(id_check(signup_id))){
+      System.out.println(signup_id+"은 중복아이디입니다.");
+      return ;
+    }
     System.out.print("비밀번호를 입력해주세요: ");
     String signup_pw = Container.getSc().nextLine();
     System.out.print("나이를 입력해주세요: ");
