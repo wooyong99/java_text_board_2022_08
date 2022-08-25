@@ -23,8 +23,7 @@ public class App {
       }
       System.out.printf("%s ) ",prompt);
       String input=Container.getSc().nextLine();
-      rq.getUrlPathFromUrl(input);
-      rq.getParameterFromUrl(input);
+      rq.setCommand(input);
       if (input.equals("exit")) {
         break;
       } else if (rq.getUrl().equals("/usr/article/write")) {    //  Create (생성) 메소드
