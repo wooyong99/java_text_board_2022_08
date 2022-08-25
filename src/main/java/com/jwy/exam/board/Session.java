@@ -9,10 +9,10 @@ public class Session {
   void setAttribute(String key, Object value){
     storage.put(key, value);
   }
-  Object getAttribute(String key){
+  public Object getAttribute(String key){
     return storage.get(key);
   }
-  void removeAttribute(String logined_member) {
+  public void removeAttribute(String logined_member) {
     storage.remove(logined_member);
   }
 }

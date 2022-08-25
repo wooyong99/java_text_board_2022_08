@@ -1,7 +1,11 @@
-package com.jwy.exam.board;
+package com.jwy.exam.board.controller;
 
 
-import java.io.IOException;
+import com.jwy.exam.board.Rq;
+import com.jwy.exam.board.Session;
+import com.jwy.exam.board.container.Container;
+import com.jwy.exam.board.dto.Member;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,9 +16,9 @@ import java.util.regex.Pattern;
 
 public class UserMemberController {
   static int index = 1;
-  static List<Member> members = new ArrayList<>();
+  public static List<Member> members = new ArrayList<>();
 
-  void CreateTestMember(int testMember_count) {
+  public void CreateTestMember(int testMember_count) {
     Random random = new Random();
     Date date = new Date();
     SimpleDateFormat regdate = new SimpleDateFormat("yy-MM-dd HH:mm");
@@ -49,14 +53,14 @@ public class UserMemberController {
   // 아이디 중복 체크 메소드
   boolean id_check(String input_id) {
     for (Member member : members) {
-      if (member.id.equals(input_id)) {
+      if (member.getId().equals(input_id)) {
         return false;
       }
     }
     return true;
   }
 
-  void Signup(Session session) {
+  public void Signup(Session session) {
     Member logined_member=(Member) session.getAttribute("logined_member");
     if(logined_member != null){
       System.out.println("로그인 상태입니다.");
@@ -66,13 +70,13 @@ public class UserMemberController {
     SimpleDateFormat regdate = new SimpleDateFormat("yy-MM-dd HH:mm");
     System.out.println("=== 회원가입 ===");
     System.out.print("이름을 입력해주세요: ");
-    String signup_name = Container.sc.next();
+    String signup_name = Container.getSc().nextLine();
     System.out.print("ID를 입력해주세요: ");
-    String signup_id = Container.sc.next();
+    String signup_id = Container.getSc().nextLine();
     System.out.print("비밀번호를 입력해주세요: ");
-    String signup_pw = Container.sc.next();
+    String signup_pw = Container.getSc().nextLine();
     System.out.print("나이를 입력해주세요: ");
-    int signup_age = Container.sc.nextInt();
+    int signup_age = Integer.parseInt(Container.getSc().nextLine());
     members.add(new Member(index, signup_name, signup_id, signup_pw, signup_age, regdate.format(date)));
     index++;
     //  테스트를 하기 위해 잠시 주석처리.
@@ -87,16 +91,16 @@ public class UserMemberController {
     }*/
   }
   //  로그인 아이디 확인.
-  Member getLoginID(String login_id) {
+  public Member getLoginID(String login_id) {
     for (Member member : members) {
-      if (member.id.equals(login_id)) {
+      if (member.getId().equals(login_id)) {
         return member;
       }
     }
     return null;
   }
   //  로그인메소드
-  void Login(Rq rq, Session session) {
+  public void Login(Rq rq, Session session) {
     Member logined_member=(Member) session.getAttribute("logined_member");
     if(logined_member!=null){
       System.out.println("로그인을 하셨습니다.");
@@ -104,16 +108,16 @@ public class UserMemberController {
     }
     System.out.println("=== 로그인 ===");
     System.out.print("아이디를 입력해주세요 :");
-    String login_id = Container.sc.nextLine();
+    String login_id = Container.getSc().nextLine();
     Member login_member = getLoginID(login_id);
     if(login_member==null){
       System.out.println("아이디를 다시 입력해주세요.");
       return ;
     }
     System.out.print("비밀번호를 입력해주세요 :");
-    String login_pw = Container.sc.nextLine();
-    if(login_pw.equals(login_member.pw)){
-      System.out.println(login_member.id+"님 로그인 성공 !");
+    String login_pw = Container.getSc().nextLine();
+    if(login_pw.equals(login_member.getPw())){
+      System.out.println(login_member.getId()+"님 로그인 성공 !");
       rq.setSessionAttri("logined_member",login_member);
     }else{
       System.out.println("비밀번호를 다시 입력해주세요.");

@@ -1,9 +1,12 @@
 package com.jwy.exam.board;
 
+import com.jwy.exam.board.container.Container;
+import com.jwy.exam.board.util.Util;
+
 import java.util.Map;
   //  Rq(request)클래스는 Util클래스에 있는 메소드를 대신하여 호출해주는 클래스이다.
   //  즉, Main 메소드에서 request(요청)을 하기 위한 클래스이다.
-class Rq {
+  public class Rq {
   private String url;
   private Map<String, String> url_param;
   private String url_path;
@@ -40,7 +43,7 @@ class Rq {
     return url_path;
   }
   public void setSessionAttri(String key,Object value){
-    Session session = Container.session;
+    Session session = Container.getSession();
     session.setAttribute(key,value);
   }
 }
