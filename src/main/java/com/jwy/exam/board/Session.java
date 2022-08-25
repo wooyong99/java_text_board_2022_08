@@ -12,11 +12,10 @@ public class Session {
   public Object getAttribute(String key){
     return storage.get(key);
   }
-  public void removeAttribute(String value) {
-    storage.remove(value);
+  public void removeAttribute(String key) {
+    storage.remove(key);
   }
-
-  public boolean logined() {
-    return storage.containsKey("logined_member");
+  public boolean hasAttribute(String key) {
+    return storage.containsKey(key);
   }
 }

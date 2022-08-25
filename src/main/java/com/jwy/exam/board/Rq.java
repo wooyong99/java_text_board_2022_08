@@ -80,7 +80,7 @@ public class Rq {
   //  login 상태를 알려주는 메소드
   public boolean islogined() {
     Session session = Container.getSession();
-    return session.logined();
+    return session.hasAttribute("logined_member");
   }
 
   //  QuesryString을 urlpath와 parameter를 return 하는 메소드
