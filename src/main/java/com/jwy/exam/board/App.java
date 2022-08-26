@@ -54,8 +54,8 @@ public class App {
       System.out.printf("입력된 명령어 : %s\n",input);
       System.out.println("--------------------");
     }
-    for (Integer num : Container.getUserArticleController().article.keySet()) {
-      System.out.println(num + " - " + Container.getUserArticleController().article.get(num));
+    for (Integer num : Container.getArticleService().getArticles().keySet()) {
+      System.out.println(num + " - " + Container.getArticleService().getArticles().get(num));
     }
     for(Member member:Container.getUserMemberController().members){
       System.out.println(member.toString());

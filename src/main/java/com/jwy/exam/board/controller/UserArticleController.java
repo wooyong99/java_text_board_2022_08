@@ -5,27 +5,22 @@ import com.jwy.exam.board.Session;
 import com.jwy.exam.board.container.Container;
 import com.jwy.exam.board.dto.Article;
 import com.jwy.exam.board.dto.Member;
+import com.jwy.exam.board.service.ArticleService;
 import com.jwy.exam.board.util.Util;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class UserArticleController {
-  // 마지막 게시글을 나타내기 위한 변수
-  static int last_index_num = 1;
-  // {키:값} = {last_index_num, Article(last_index_num,title,body)}
-  public static Map<Integer, Article> article = new HashMap();
+  ArticleService articleService ;
+  Map<Integer,Article> articles ;
+  public UserArticleController(){
+    articleService =Container.getArticleService();
+    articles=articleService.getArticles();
+  }
   // 테스트 입력 데이터 메서드
   public void CreateTestArticle(int test_article_count) {
-    System.out.println("== 게시글 테스트 데이터 생성 시작 ==");
-    for (int i = 1; i <= test_article_count; i++) {
-      Date date=new Date();
-      SimpleDateFormat create_time=new SimpleDateFormat("yy-MM-dd HH:mm");
-      article.put(last_index_num, new Article(last_index_num, "사용자" + i, "제목" + i, "내용" + i,create_time.format(date)));
-      last_index_num++;
-    }
-    System.out.println("       Loading ...   ");
-    System.out.println("== 게시글 테스트 데이터 " + (last_index_num - 1) + "개 생성 ==");
+    articleService.createTestDate(test_article_count);
   }
 
   // 게시글 생성 메서드
@@ -41,18 +36,14 @@ public class UserArticleController {
       title = Container.getSc().nextLine();
       System.out.printf("내용 : ");
       body = Container.getSc().nextLine();
-      article.put(last_index_num, new Article(last_index_num, logined_member.getId(), title, body, create_time.format(date)));
-      System.out.printf("%d번 게시물이 등록되었습니다.\n", last_index_num);
-      last_index_num++;
+      articleService.createArticle(logined_member.getId(), title, body, create_time.format(date));
     }else{
       System.out.println("작성자 : 비회원 (익명)");
       System.out.printf("제목 : ");
       title = Container.getSc().nextLine();
       System.out.printf("내용 : ");
       body = Container.getSc().nextLine();
-      article.put(last_index_num, new Article(last_index_num, "비회원 (익명)", title, body, create_time.format(date)));
-      System.out.printf("%d번 게시물이 등록되었습니다.\n", last_index_num);
-      last_index_num++;
+      articleService.createArticle("비회원 (익명)", title, body, create_time.format(date));
     }
   }
 
@@ -64,7 +55,7 @@ public class UserArticleController {
     }else{
       try{
         System.out.printf("번호 : %d\n작성자 : %s\n제목 : %s\n내용 : %s\n작성일자 : %s\n",
-        article.get(param).getPk(), article.get(param).getAuthor(), article.get(param).getTitle(), article.get(param).getBody(),article.get(param).getCreate_time());
+        articles.get(param).getPk(), articles.get(param).getAuthor(), articles.get(param).getTitle(), articles.get(param).getBody(),articles.get(param).getCreate_time());
       }catch(NullPointerException e){
         System.out.println(param+"번 게시글은 없는 게시글입니다.");
       }
@@ -80,8 +71,8 @@ public class UserArticleController {
       System.out.println("게시글 번호를 입력해주세요.");
       return ;
     }else{
-      Article select_article=article.get(id_param);
-      if(article.containsKey(id_param)){
+      Article select_article=articles.get(id_param);
+      if(articles.containsKey(id_param)){
         System.out.print("변경할 제목을 입력해주세요 :");
         String update_title = Container.getSc().nextLine();
         System.out.print("변경할 내용을 입력해주세요 :");
@@ -102,9 +93,9 @@ public class UserArticleController {
     System.out.println("== 게시물 리스트 ==");
     String keyword_param=rq.getStrparam("searchKeyword","");
     if(keyword_param==""){
-      result_list=new ArrayList<>(article.values());
+      result_list=new ArrayList<>(articles.values());
     }else{
-      for (Article article : article.values()) {
+      for (Article article : articles.values()) {
         if (article.getTitle().contains(params.get("searchKeyword"))) {
           result_list.add(article);
         }
@@ -129,8 +120,8 @@ public class UserArticleController {
       System.out.println("삭제할 게시글 번호를 입력해주세요.");
       return ;
     }else{
-      if(article.containsKey(id_param)){
-        article.remove(id_param);
+      if(articles.containsKey(id_param)){
+        articles.remove(id_param);
         System.out.println(id_param+"번 게시글이 삭제되었습니다.");
         return;
       }else{
