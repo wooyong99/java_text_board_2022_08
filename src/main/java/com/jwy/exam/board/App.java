@@ -57,7 +57,7 @@ public class App {
     for (Integer num : Container.getArticleService().getArticles().keySet()) {
       System.out.println(num + " - " + Container.getArticleService().getArticles().get(num));
     }
-    for(Member member:Container.getUserMemberController().members){
+    for(Member member:Container.getMemberService().getMembers()){
       System.out.println(member.toString());
     }
     System.out.println("== 프로그램 종료 ==");

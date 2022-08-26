@@ -5,6 +5,7 @@ import com.jwy.exam.board.Rq;
 import com.jwy.exam.board.Session;
 import com.jwy.exam.board.container.Container;
 import com.jwy.exam.board.dto.Member;
+import com.jwy.exam.board.service.MemberService;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,17 +16,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UserMemberController {
-  static int index = 1;
-  public static List<Member> members = new ArrayList<>();
-
+  MemberService memberService;
+  List<Member> members;
+  public UserMemberController(){
+    memberService = Container.getMemberService();
+    members = memberService.getMembers();
+  }
   public void CreateTestMember(int testMember_count) {
-    Random random = new Random();
-    Date date = new Date();
-    SimpleDateFormat regdate = new SimpleDateFormat("yy-MM-dd HH:mm");
-    for (int i = index; i <= testMember_count; i++) {
-      members.add(new Member(index, "user" + i, "id" + i, "password" + i, random.nextInt(40), regdate.format(date)));
-      index++;
-    }
+    memberService.createTestData(testMember_count);
   }
 
   // 아이디 유효성 검사 메소드 ( 8글자 이상, 아이디 중복, 특수문자 포함여부) 검사
@@ -81,8 +79,7 @@ public class UserMemberController {
     String signup_pw = Container.getSc().nextLine();
     System.out.print("나이를 입력해주세요: ");
     int signup_age = Integer.parseInt(Container.getSc().nextLine());
-    members.add(new Member(index, signup_name, signup_id, signup_pw, signup_age, regdate.format(date)));
-    index++;
+    memberService.createMember(signup_name,signup_id,signup_pw,signup_age, regdate.format(date));
     //  테스트를 하기 위해 잠시 주석처리.
     /*if(id_validation(signup_id) && pw_validation(signup_pw)){
       members.add(new Member(index,signup_name,signup_id,signup_pw,signup_age));
