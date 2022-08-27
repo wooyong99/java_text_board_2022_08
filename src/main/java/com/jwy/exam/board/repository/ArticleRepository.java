@@ -1,7 +1,6 @@
 package com.jwy.exam.board.repository;
 
 import com.jwy.exam.board.dto.Article;
-import lombok.Data;
 import lombok.Getter;
 
 import java.util.HashMap;
