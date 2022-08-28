@@ -1,6 +1,9 @@
 package com.jwy.exam.board;
 
 
+import com.jwy.exam.board.container.Container;
+import com.jwy.exam.board.dto.Article;
+import com.jwy.exam.board.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +21,11 @@ public class Main {
 }*/
 @Controller
 public class Main {
-
-  @GetMapping("/Hello")
+  @GetMapping("/")
   public String home(Model model){
-    System.out.println("5시간만에 intellij 에서tomcat, spring mvc 연결 성공....");
+    ArticleService articleService=Container.getArticleService();
+    Map<Integer, Article> articles=articleService.getArticles();
+    model.addAttribute("articles",articles);
     return "index";
   }
 }
