@@ -16,7 +16,16 @@ public class ArticleRepository {
     articles=new HashMap<>();
   }
   public void createArticle(int board_id,String author, String title, String body, String regdate){
-    articles.put(last_index, new Article(board_id, author, title, body, regdate));
+    articles.put(last_index, new Article(board_id, author, title, body, regdate,0));
     last_index++;
+  }
+
+  public void viewsCount(Article article) {
+    for(Article sel_article: articles.values()){
+      if(sel_article.equals(article)){
+        sel_article.setViews(sel_article.getViews()+1);
+        return ;
+      }
+    }
   }
 }

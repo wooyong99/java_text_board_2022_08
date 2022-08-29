@@ -33,4 +33,8 @@ public class ArticleService {
   public void createArticle(int board_id,String author, String title, String body, String regdate){
     articleRepository.createArticle(board_id,author, title,body,regdate);
   }
+
+  public void viewsCount(Article article) {
+    articleRepository.viewsCount(article);
+  }
 }

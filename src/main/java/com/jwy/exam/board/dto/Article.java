@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 public class Article {
   int board_id;
   String author, title, body, create_time;
+  int views;
 }

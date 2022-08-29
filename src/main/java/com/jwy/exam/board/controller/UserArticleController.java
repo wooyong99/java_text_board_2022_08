@@ -61,9 +61,10 @@ public class UserArticleController {
     }else{
       Article article=articles.get(param);
       try{
-        Board board=boardService.getBoardById(article.getBoard_id());
-        System.out.printf("게시판 : %s\n작성자 : %s\n제목 : %s\n내용 : %s\n작성일자 : %s\n",
-        boardService.getBoardName(article.getBoard_id()), article.getAuthor(), article.getTitle(), article.getBody(),article.getCreate_time());
+        //Board board=boardService.getBoardById(article.getBoard_id());
+        articleService.viewsCount(article);
+        System.out.printf("게시판 : %s\n작성자 : %s\n제목 : %s\n내용 : %s\n작성일자 : %s\n조회 수:%d\n",
+        boardService.getBoardName(article.getBoard_id()), article.getAuthor(), article.getTitle(), article.getBody(),article.getCreate_time(),article.getViews(),article.getViews());
       }catch(NullPointerException e){
         System.out.println(param+"번 게시글은 없는 게시글입니다.");
         return ;
