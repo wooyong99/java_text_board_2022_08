@@ -2,6 +2,10 @@ package com.jwy.exam.board;
 
 import com.jwy.exam.board.container.Container;
 import com.jwy.exam.board.dto.Member;
+import com.jwy.exam.board.interceptor.Interceptor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class App {
   public static void main() {
@@ -24,6 +28,9 @@ public class App {
       System.out.printf("%s ) ",prompt);
       String input=Container.getSc().nextLine();
       rq.setCommand(input);
+      if(runInterceptors(rq)==false) {
+        continue;
+      }
       if (input.equals("exit")) {
         break;
       } else if (rq.getUrl().equals("/usr/article/write")) {    //  Create (생성) 메소드
@@ -62,5 +69,17 @@ public class App {
     }
     System.out.println("== 프로그램 종료 ==");
     Container.getSc().close();
+  }
+  private static boolean runInterceptors(Rq rq) {
+      List<Interceptor> interceptors = new ArrayList<>();
+
+      interceptors.add(Container.getNeedLoginInterceptor());
+      interceptors.add(Container.getNeedLogoutInterceptor());
+      for(Interceptor interceptor:interceptors){
+        if(interceptor.run(rq)==false){
+          return false;
+        }
+      }
+      return true;
   }
 }

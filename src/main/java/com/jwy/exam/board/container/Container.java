@@ -3,6 +3,8 @@ package com.jwy.exam.board.container;
 import com.jwy.exam.board.Session;
 import com.jwy.exam.board.controller.UserArticleController;
 import com.jwy.exam.board.controller.UserMemberController;
+import com.jwy.exam.board.interceptor.NeedLoginInterceptor;
+import com.jwy.exam.board.interceptor.NeedLogoutInterceptor;
 import com.jwy.exam.board.repository.ArticleRepository;
 import com.jwy.exam.board.repository.MemberRepository;
 import com.jwy.exam.board.service.ArticleService;
@@ -31,14 +33,21 @@ public class Container {
   static MemberRepository memberRepository;
   @Getter
   static MemberService memberService;
+  @Getter
+  static NeedLoginInterceptor needLoginInterceptor;
+  @Getter
+  static NeedLogoutInterceptor needLogoutInterceptor;
   static{
     sc=new Scanner(System.in);
     articleRepository = new ArticleRepository();
     articleService = new ArticleService();
+    needLoginInterceptor=new NeedLoginInterceptor();
+    needLogoutInterceptor=new NeedLogoutInterceptor();
     memberRepository = new MemberRepository();
     memberService = new MemberService();
     userArticleController=new UserArticleController();
     userMemberController=new UserMemberController();
     session=new Session();
+
   }
 }

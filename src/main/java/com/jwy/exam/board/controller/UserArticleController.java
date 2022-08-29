@@ -37,13 +37,6 @@ public class UserArticleController {
       System.out.printf("내용 : ");
       body = Container.getSc().nextLine();
       articleService.createArticle(logined_member.getId(), title, body, create_time.format(date));
-    }else{
-      System.out.println("작성자 : 비회원 (익명)");
-      System.out.printf("제목 : ");
-      title = Container.getSc().nextLine();
-      System.out.printf("내용 : ");
-      body = Container.getSc().nextLine();
-      articleService.createArticle("비회원 (익명)", title, body, create_time.format(date));
     }
   }
 
@@ -59,7 +52,6 @@ public class UserArticleController {
       }catch(NullPointerException e){
         System.out.println(param+"번 게시글은 없는 게시글입니다.");
       }
-
     }
   }
 

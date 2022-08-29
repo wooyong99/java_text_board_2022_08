@@ -60,10 +60,6 @@ public class UserMemberController {
   }
   //  회원가입 메소드
   public void Signup(Rq rq) {
-    if(rq.islogined()){
-      System.out.println("로그인 상태입니다.");
-      return;
-    }
     Date date = new Date();
     SimpleDateFormat regdate = new SimpleDateFormat("yy-MM-dd HH:mm");
     System.out.println("=== 회원가입 ===");
@@ -102,10 +98,6 @@ public class UserMemberController {
   }
   //  로그인메소드
   public void Login(Rq rq) {
-    if(rq.islogined()){
-      System.out.println("로그인 상태입니다.");
-      return ;
-    }
     System.out.println("=== 로그인 ===");
     System.out.print("아이디를 입력해주세요 :");
     String login_id = Container.getSc().nextLine();
@@ -129,8 +121,6 @@ public class UserMemberController {
     if(rq.islogined()){
       rq.logout();
       System.out.println("로그아웃 되었습니다.");
-    }else{
-      System.out.println("로그인 후 이용해주세요.");
     }
   }
 }

@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/*
 public class Main {
   public static void main(String[] args){
     new App().main();
   }
-}*/
+}
+/*
 @Controller
 public class Main {
   @GetMapping("/")
@@ -28,4 +28,4 @@ public class Main {
     model.addAttribute("articles",articles);
     return "index";
   }
-}
+}*/
