@@ -3,6 +3,7 @@ package com.jwy.exam.board.service;
 import com.jwy.exam.board.dto.Article;
 import com.jwy.exam.board.dto.Member;
 import com.jwy.exam.board.repository.MemberRepository;
+import com.jwy.exam.board.util.Util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,10 +18,8 @@ public class MemberService {
   }
   public void createTestData(int testMember_count){
     Random random = new Random();
-    Date date = new Date();
-    SimpleDateFormat regdate = new SimpleDateFormat("yy-MM-dd HH:mm");
     for (int i = 1; i <= testMember_count; i++) {
-      memberRepository.createMember("user" + i, "id" + i, "password" + i, random.nextInt(40), regdate.format(date));
+      memberRepository.createMember("user" + i, "id" + i, "password" + i, random.nextInt(40), Util.getNowDate());
     }
   }
   public void createMember(String name, String id, String password, int age, String regdate){
