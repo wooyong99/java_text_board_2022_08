@@ -18,14 +18,5 @@ public class Main {
     new App().main();
   }
 }
-/*
-@Controller
-public class Main {
-  @GetMapping("/")
-  public String home(Model model){
-    ArticleService articleService=Container.getArticleService();
-    Map<Integer, Article> articles=articleService.getArticles();
-    model.addAttribute("articles",articles);
-    return "index";
-  }
-}*/
+
+

@@ -18,7 +18,7 @@
     <!--어노테이션 사용-->
     <annotation-driven/>
     <!-- Component Scan 패키지 설정 -->
-    <context:component-scan base-package="com.jwy.exam.board"/>
+    <context:component-scan base-package="com.jwy.exam.controller"/>
     <!-- 정적 리소스 경로 설정 -->
     <resources mapping="/**" location="/resources/"/>
 </beans:beans>
