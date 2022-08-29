@@ -60,8 +60,8 @@ public class UserArticleController {
       System.out.println("id값을 입력해주세요.");
     }else{
       Article article=articles.get(param);
-      Board board=boardService.getBoardById(article.getBoard_id());
       try{
+        Board board=boardService.getBoardById(article.getBoard_id());
         System.out.printf("게시판 : %s\n작성자 : %s\n제목 : %s\n내용 : %s\n작성일자 : %s\n",
         boardService.getBoardName(article.getBoard_id()), article.getAuthor(), article.getTitle(), article.getBody(),article.getCreate_time());
       }catch(NullPointerException e){
@@ -98,24 +98,36 @@ public class UserArticleController {
   public void ArticleSearch(Rq rq) {
     List<Article> result_list = new ArrayList<>();
     Map<String, String> params = rq.getParam();
-    System.out.println("== 게시물 리스트 ==");
-    String keyword_param=rq.getStrparam("searchKeyword","");
-    if(keyword_param==""){
-      result_list=new ArrayList<>(articles.values());
-    }else{
-      for (Article article : articles.values()) {
-        if (article.getTitle().contains(params.get("searchKeyword"))) {
-          result_list.add(article);
+    int board_id=rq.getIntparam("boardId",0);
+    if(!(board_id==0) && boardService.getBoardById(board_id)!=null){
+      for(Integer pk:articles.keySet()){
+        if(articles.get(pk).getBoard_id()==board_id){
+          result_list.add(articles.get(pk));
         }
       }
+      System.out.printf("== %s 리스트 ==\n",boardService.getBoardName(board_id));
+    }else{
+      result_list= new ArrayList<>(articles.values());
+      System.out.println("== 게시물 리스트 ==\n");
+    }
+    List<Article> filter_list=new ArrayList<>();
+    String keyword_param=rq.getStrparam("searchKeyword","");
+    if(keyword_param!=""){
+      for (Article article : result_list) {
+        if (article.getTitle().contains(keyword_param)) {
+          filter_list.add(article);
+        }
+      }
+    }else{
+      filter_list=result_list;
     }
     String order_param=rq.getStrparam("orderBy","");
     if(order_param.equals("idAsc")) {
-      for (Article article : result_list) {
+      for (Article article : filter_list) {
         System.out.println(boardService.getBoardName(article.getBoard_id()) + " / " + article.getAuthor() + " / " + article.getTitle() + " / " + article.getCreate_time());
       }
     }else{
-      for(Article article: Util.reverseList(result_list)){
+      for(Article article: Util.reverseList(filter_list)){
         System.out.println(boardService.getBoardName(article.getBoard_id()) + " / " + article.getAuthor() + " / " + article.getTitle()+ " / " +article.getCreate_time());
       }
     }

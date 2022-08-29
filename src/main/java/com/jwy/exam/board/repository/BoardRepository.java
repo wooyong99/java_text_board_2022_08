@@ -1,8 +1,8 @@
 package com.jwy.exam.board.repository;
 
+
 import com.jwy.exam.board.dto.Board;
 import com.jwy.exam.board.util.Util;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class BoardRepository {
   static List<Board> boards;
 
   public BoardRepository(){
-    this.boards=new ArrayList<>();
+    this.boards=new ArrayList<Board>();
     last_index=1;
   }
   public Board getBoardById(int id){

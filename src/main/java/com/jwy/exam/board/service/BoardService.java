@@ -3,6 +3,8 @@ package com.jwy.exam.board.service;
 import com.jwy.exam.board.dto.Board;
 import com.jwy.exam.board.repository.BoardRepository;
 
+import java.util.List;
+
 public class BoardService {
   BoardRepository boardRepository;
   public BoardService(){
