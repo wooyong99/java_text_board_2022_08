@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Article {
-  int pk;
+  int board_id;
   String author, title, body, create_time;
 }

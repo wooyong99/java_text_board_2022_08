@@ -15,8 +15,8 @@ public class ArticleRepository {
     last_index = 1;
     articles=new HashMap<>();
   }
-  public void createArticle(String author, String title, String body, String regdate){
-    articles.put(last_index, new Article(last_index, author, title, body, regdate));
+  public void createArticle(int board_id,String author, String title, String body, String regdate){
+    articles.put(last_index, new Article(board_id, author, title, body, regdate));
     last_index++;
   }
 }

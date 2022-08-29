@@ -11,6 +11,7 @@ public class App {
   public static void main() {
     System.out.println("== 게시판 v 0.1 ==");
     System.out.println("== 프로그램 시작 ==");
+    Container.getBoardService().createTestData();
     System.out.print("게시글 테스트 데이터 개수 입력 :");
     int testArticle_count = Integer.parseInt(Container.getSc().nextLine());
     Container.getUserArticleController().CreateTestArticle(testArticle_count);

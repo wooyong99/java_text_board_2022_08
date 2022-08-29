@@ -4,8 +4,10 @@ import com.jwy.exam.board.Rq;
 import com.jwy.exam.board.Session;
 import com.jwy.exam.board.container.Container;
 import com.jwy.exam.board.dto.Article;
+import com.jwy.exam.board.dto.Board;
 import com.jwy.exam.board.dto.Member;
 import com.jwy.exam.board.service.ArticleService;
+import com.jwy.exam.board.service.BoardService;
 import com.jwy.exam.board.util.Util;
 
 import java.text.SimpleDateFormat;
@@ -14,9 +16,11 @@ import java.util.*;
 public class UserArticleController {
   ArticleService articleService ;
   Map<Integer,Article> articles ;
+  BoardService boardService;
   public UserArticleController(){
     articleService =Container.getArticleService();
     articles=articleService.getArticles();
+    boardService = Container.getBoardService();
   }
   // 테스트 입력 데이터 메서드
   public void CreateTestArticle(int test_article_count) {
@@ -26,8 +30,17 @@ public class UserArticleController {
   // 게시글 생성 메서드
   public void CreateArticle(Rq rq) {
     String title, body; // 입력 변수 : 제목, 내용
-    Date date=new Date();
-    SimpleDateFormat create_time=new SimpleDateFormat("yy-MM-dd HH:mm");
+    int board_id=rq.getIntparam("boardId",0);
+    if(board_id==0){
+      System.out.println("게시판 번호를 입력해주세요.");
+      return ;
+    }
+    if(boardService.getBoardById(board_id)==null){
+      System.out.println("해당 게시판은 존재하지 않습니다.");
+      return ;
+    }else{
+
+    }
     System.out.printf("== 게시물 등록 ==\n");
     if(rq.islogined()){
       Member logined_member=(Member) rq.getSessionAttri("logined_member");
@@ -36,7 +49,7 @@ public class UserArticleController {
       title = Container.getSc().nextLine();
       System.out.printf("내용 : ");
       body = Container.getSc().nextLine();
-      articleService.createArticle(logined_member.getId(), title, body, create_time.format(date));
+      articleService.createArticle(board_id,logined_member.getId(), title, body, rq.getTime());
     }
   }
 
@@ -46,11 +59,14 @@ public class UserArticleController {
     if(param==0){
       System.out.println("id값을 입력해주세요.");
     }else{
+      Article article=articles.get(param);
+      Board board=boardService.getBoardById(article.getBoard_id());
       try{
-        System.out.printf("번호 : %d\n작성자 : %s\n제목 : %s\n내용 : %s\n작성일자 : %s\n",
-        articles.get(param).getPk(), articles.get(param).getAuthor(), articles.get(param).getTitle(), articles.get(param).getBody(),articles.get(param).getCreate_time());
+        System.out.printf("게시판 : %d\n작성자 : %s\n제목 : %s\n내용 : %s\n작성일자 : %s\n",
+        board.getName(), article.getAuthor(), article.getTitle(), article.getBody(),article.getCreate_time());
       }catch(NullPointerException e){
         System.out.println(param+"번 게시글은 없는 게시글입니다.");
+        return ;
       }
     }
   }
@@ -96,11 +112,11 @@ public class UserArticleController {
     String order_param=rq.getStrparam("orderBy","");
     if(order_param.equals("idAsc")) {
       for (Article article : result_list) {
-        System.out.println(article.getPk() + " / " + article.getAuthor() + " / " + article.getTitle() + " / " + article.getCreate_time());
+        System.out.println(boardService.getBoardName(article.getBoard_id()) + " / " + article.getAuthor() + " / " + article.getTitle() + " / " + article.getCreate_time());
       }
     }else{
       for(Article article: Util.reverseList(result_list)){
-        System.out.println(article.getPk() + " / " + article.getAuthor() + " / " + article.getTitle()+ " / " +article.getCreate_time());
+        System.out.println(boardService.getBoardName(article.getBoard_id()) + " / " + article.getAuthor() + " / " + article.getTitle()+ " / " +article.getCreate_time());
       }
     }
   }

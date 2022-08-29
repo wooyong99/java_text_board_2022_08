@@ -1,11 +1,14 @@
 package com.jwy.exam.board.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Util {
+  public static String getNowDate(){
+    Date now=new Date();
+    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    return sdf.format(now);
+  }
   //  매개변수로 받은 List를 역순으로 return 하는 메소드이다..
   public static <T> List<T> reverseList(List<T> list) {
     List<T> reverse = new ArrayList<>(list.size());

@@ -88,5 +88,7 @@ public class Rq {
     this.url_path = Util.getUrlPathFromUrl(queryString);
     this.url_param = Util.getParameterFromUrl(queryString);
   }
-
+  public String getTime(){
+   return Util.getNowDate();
+  }
 }

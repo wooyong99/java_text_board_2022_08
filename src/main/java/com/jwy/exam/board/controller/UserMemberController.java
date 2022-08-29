@@ -60,8 +60,6 @@ public class UserMemberController {
   }
   //  회원가입 메소드
   public void Signup(Rq rq) {
-    Date date = new Date();
-    SimpleDateFormat regdate = new SimpleDateFormat("yy-MM-dd HH:mm");
     System.out.println("=== 회원가입 ===");
     System.out.print("이름을 입력해주세요: ");
     String signup_name = Container.getSc().nextLine();
@@ -75,7 +73,7 @@ public class UserMemberController {
     String signup_pw = Container.getSc().nextLine();
     System.out.print("나이를 입력해주세요: ");
     int signup_age = Integer.parseInt(Container.getSc().nextLine());
-    memberService.createMember(signup_name,signup_id,signup_pw,signup_age, regdate.format(date));
+    memberService.createMember(signup_name,signup_id,signup_pw,signup_age, rq.getTime());
     //  테스트를 하기 위해 잠시 주석처리.
     /*if(id_validation(signup_id) && pw_validation(signup_pw)){
       members.add(new Member(index,signup_name,signup_id,signup_pw,signup_age));
