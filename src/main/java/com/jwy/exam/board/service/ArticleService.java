@@ -20,7 +20,7 @@ public class ArticleService {
     Random random=new Random();
     System.out.println("== 게시글 테스트 데이터 생성 시작 ==");
     for (int i = 1; i <= test_article_count; i++) {
-      createArticle(random.nextInt(1)+1,"사용자"+1,"제목"+i,"내용"+i, Util.getNowDate());
+      createArticle(random.nextInt(2)+1,"사용자"+1,"제목"+i,"내용"+i, Util.getNowDate());
     }
     System.out.println("       Loading ...   ");
     System.out.println("== 게시글 테스트 데이터 " + test_article_count + "개 생성 ==");

@@ -41,7 +41,7 @@ public class UserArticleController {
     }else{
 
     }
-    System.out.printf("== 게시물 등록 ==\n");
+    System.out.printf("== %s 등록 ==\n",boardService.getBoardName(board_id));
     if(rq.islogined()){
       Member logined_member=(Member) rq.getSessionAttri("logined_member");
       System.out.println("작성자 : "+logined_member.getId());
@@ -62,8 +62,8 @@ public class UserArticleController {
       Article article=articles.get(param);
       Board board=boardService.getBoardById(article.getBoard_id());
       try{
-        System.out.printf("게시판 : %d\n작성자 : %s\n제목 : %s\n내용 : %s\n작성일자 : %s\n",
-        board.getName(), article.getAuthor(), article.getTitle(), article.getBody(),article.getCreate_time());
+        System.out.printf("게시판 : %s\n작성자 : %s\n제목 : %s\n내용 : %s\n작성일자 : %s\n",
+        boardService.getBoardName(article.getBoard_id()), article.getAuthor(), article.getTitle(), article.getBody(),article.getCreate_time());
       }catch(NullPointerException e){
         System.out.println(param+"번 게시글은 없는 게시글입니다.");
         return ;
