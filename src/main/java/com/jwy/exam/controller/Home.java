@@ -9,5 +9,9 @@ public class Home {
     public String home(){
         return "index";
     }
+    @RequestMapping("/free")
+    public String free(){return "free";}
+    @RequestMapping("/notice")
+    public String notice(){return "notice";}
 
 }

@@ -12,7 +12,7 @@
 </head>
 <body>
     <div>
-        <nav class="navbar navbar-light bg-light fixed-top">
+        <nav class="navbar navbar-light bg-light fixed-top" id="nav-container">
             <div class="container-fluid" id="div-nav-name">
                 <a class="navbar-brand" id="a-nav-name" href="/">Web Reference TextBoard</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
@@ -26,7 +26,7 @@
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="">Notice</a>
+                                <a class="nav-link active" aria-current="page" href="/notice">Notice</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/free">Free</a>
@@ -54,6 +54,11 @@
             </div>
         </nav>
     </div>
+    <hr/>
+
+    <%--<div id="nav-tab">
+        gggggggggggg
+    </div>--%>
 
 
 
