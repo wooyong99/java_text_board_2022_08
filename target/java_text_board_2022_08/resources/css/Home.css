@@ -1,3 +1,11 @@
+body a{
+    text-decoration: none;
+    color:black;
+}
+body li{
+    display:inline;
+    list-style: none;
+}
 h1 {
     display:flex;
     margin:0 auto;
@@ -11,18 +19,35 @@ nav#nav-container{
 }
 div#div-nav-name {
     justify-content: space-around;
+    width:95%;
 }
 div#div-nav-name>a#a-nav-name{
-    width:600px;
+    font-family: Georgia;
 }
-div#nav-tab{
-    border:1px solid;
-    width:300px;
-    height:100%;
-}
-hr{
+hr#nav-bar{
     border: 0;
     height: 1px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
     margin-top:24px;
+}
+article {
+    padding-top:15px;
+    width:1400px;
+    margin:0 auto;
+}
+div#nav-tab{
+    width:150px;
+    height:100%;
+    font-family: Georgia;
+}
+div#nav-tab>ul{
+    padding-left:0px;
+    text-align: center;
+    vertical-align: center;
+}
+hr#nav-tab{
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    margin-top:8px;
 }

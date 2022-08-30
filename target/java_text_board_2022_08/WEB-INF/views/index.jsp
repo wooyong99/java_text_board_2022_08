@@ -54,11 +54,21 @@
             </div>
         </nav>
     </div>
-    <hr/>
-
-    <%--<div id="nav-tab">
-        gggggggggggg
-    </div>--%>
+    <hr id="nav-bar"/>
+    <article id="article-container">
+        <div id="nav-tab">
+            <ul>
+                <li>
+                    <a href="/notice">Notice Board</a>
+                </li>
+                <hr id="nav-tab"/>
+                <li>
+                    <a href="/free">Free Board</a>
+                </li>
+                <hr id="nav-tab"/>
+            </ul>
+        </div>
+    </article>
 
 
 
