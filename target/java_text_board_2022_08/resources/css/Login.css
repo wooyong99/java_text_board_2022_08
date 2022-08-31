@@ -1,0 +1,38 @@
+body>h1{
+    display: flex;
+    margin: 30px 0 30px 0;
+    justify-content: center;
+    position: relative;
+    top: 50px;
+    right: 25px;
+    font-family: Georgia;
+    text-decoration: none;
+    color:black;
+    height:60px;
+}
+a{
+    text-decoration: none;
+    color:black;
+}
+body>form{
+    font-family: Georgia;
+    width:300px;
+    height: 200px;
+    padding-top: 100px;
+    position: relative;
+    right: 25px;
+    display:flex;
+    flex-direction: column;
+    align-content: space-between;
+    margin:0 auto;
+}
+body>form>div {
+    width: 300px;
+    border: 1px;
+}
+
+input#login_btn {
+    width:100%
+}
+
+
