@@ -12,8 +12,6 @@ public class Login {
     }
     @RequestMapping("/login_check")
     public String login_check(String user_id, String user_pw, Model model){
-        System.out.println(user_id);
-        System.out.println(user_pw);
         if(user_id.equals("admin") && user_pw.equals("1234")){
             return "login_success";
         }else{
